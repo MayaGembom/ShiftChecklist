@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "524068110852",
+    "project_id": "shiftchecklistapp",
+    "storage_bucket": "shiftchecklistapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:524068110852:android:4a87bdf20c0d21f4446b51",
+        "android_client_info": {
+          "package_name": "com.MayaGembom.shiftchecklist"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "524068110852-k5c0tpc9e00nkhtaolqf0mh028omp60k.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDa7Yi1gZ5hPWaSEJzjupNU5zXesgmStCs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "524068110852-k5c0tpc9e00nkhtaolqf0mh028omp60k.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
