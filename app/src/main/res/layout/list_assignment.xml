@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:cardCornerRadius="20dp"
+    android:elevation="8dp"
+    app:cardElevation="8dp"
+    android:layout_margin="10dp"
+    android:layoutDirection="rtl">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFC7F2"
+
+        >
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/assignment_IMG_start"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:padding="6dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_baseline_linear_scale_24" />
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/assignment_LBL_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:text="ASSIGNMENT_TITLE"
+            android:layout_toEndOf="@+id/assignment_IMG_start"
+            android:textColorHint="@color/black"
+            app:icon="@drawable/ic_baseline_linear_scale_24"
+            android:textSize="18sp" />
+
+
+
+    </RelativeLayout>
+
+</com.google.android.material.card.MaterialCardView>

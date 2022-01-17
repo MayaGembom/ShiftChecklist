@@ -1,6 +1,11 @@
 <resources>
     <string name="app_name">ShiftChecklist</string>
     <string name="PHONE_NUMBER">כניסה באמצעות מספר טלפון</string>
-    <string name="MISSIONS">טופס משימות</string>
+    <string name="ASSIGNMENTS_FORM">טופס משימות</string>
+    <string name="HOME">בית</string>
+    <string name="ASSIGNMENTS">משימות</string>
+    <string name="SETTINGS">הגדרות</string>
 
+    <string name="openNavDrawer">Navigation Drawer Open</string>
+    <string name="closeNavDrawer">Navigation Drawer Close</string>
 </resources>
