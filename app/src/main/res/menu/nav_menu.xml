@@ -3,10 +3,15 @@
 
     <item android:title="">
         <menu>
-            <item android:title="Settings"
-                android:icon="@drawable/ic_baseline_settings_24" />
-            <item android:title="Log Out"
-                 />
+            <item android:title="@string/SETTINGS"
+                android:icon="@drawable/settings_icon" />
+            <item android:title="@string/ASSIGNMENTS"
+                android:icon="@drawable/assignment_icon" />
+
+            <item android:title="@string/LogOut"
+                android:icon="@drawable/logout_icon" />
+
+
         </menu>
     </item>
 

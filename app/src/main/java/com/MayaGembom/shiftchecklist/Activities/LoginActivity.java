@@ -6,6 +6,7 @@ import android.widget.Button;
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
+import com.MayaGembom.shiftchecklist.Objects.MyFirebase;
 import com.MayaGembom.shiftchecklist.R;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.FirebaseAuthUIActivityResultContract;
@@ -26,8 +27,9 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         login_BTN_sign = findViewById(R.id.login_BTN_sign);
+        FirebaseUser user = MyFirebase.getInstance().getUser();
 
-        if(FirebaseAuth.getInstance().getCurrentUser() != null){
+        if(user != null){
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
             finish();
@@ -45,12 +47,9 @@ public class LoginActivity extends AppCompatActivity {
                 signInLauncher.launch(signInIntent);
             }
         });
-
-
     }
 
     List<AuthUI.IdpConfig> providers = Arrays.asList(new AuthUI.IdpConfig.PhoneBuilder().setDefaultCountryIso("IL").build());
-
 
     private final ActivityResultLauncher<Intent> signInLauncher = registerForActivityResult(
             new FirebaseAuthUIActivityResultContract(),
@@ -66,7 +65,6 @@ public class LoginActivity extends AppCompatActivity {
         IdpResponse response = result.getIdpResponse();
         if (result.getResultCode() == RESULT_OK) {
             // Successfully signed in
-            FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
             Intent intent = new Intent(this, HomeActivity.class);
             startActivity(intent);
             finish();

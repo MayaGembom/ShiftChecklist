@@ -2,17 +2,17 @@ package com.MayaGembom.shiftchecklist.Objects;
 
 public class Assignment {
 
-    private String title = "";
+    private String description = "";
 
     public Assignment() {
     }
 
-    public String getTitle() {
-        return title;
+    public String getDescription() {
+        return description;
     }
 
-    public Assignment setTitle(String title) {
-        this.title = title;
+    public Assignment setDescription(String description) {
+        this.description = description;
         return this;
     }
 

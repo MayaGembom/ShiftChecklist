@@ -50,6 +50,7 @@
             android:hint="@string/PHONE_NUMBER"
             android:textAlignment="center"
             android:textColorHint="@color/black"
+            android:minLines="2"
             android:textFontWeight="700"
             android:textSize="18sp"
             app:icon="@drawable/ic_baseline_local_phone_24"

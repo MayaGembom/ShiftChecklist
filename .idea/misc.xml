@@ -3,7 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Repositories/ShiftChecklist/app/src/main/res/drawable-v24/assignment_icon.xml" value="0.2490740740740741" />
         <entry key="..\:/Repositories/ShiftChecklist/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.20989583333333334" />
+        <entry key="..\:/Repositories/ShiftChecklist/app/src/main/res/drawable-v24/logout_icon.xml" value="0.2490740740740741" />
         <entry key="..\:/Repositories/ShiftChecklist/app/src/main/res/drawable/ic_baseline_dehaze_24.xml" value="0.20989583333333334" />
         <entry key="..\:/Repositories/ShiftChecklist/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.24114583333333334" />
         <entry key="..\:/Repositories/ShiftChecklist/app/src/main/res/drawable/ic_baseline_linear_scale_24.xml" value="0.20989583333333334" />
@@ -11,6 +13,7 @@
         <entry key="..\:/Repositories/ShiftChecklist/app/src/main/res/drawable/ic_baseline_settings_24.xml" value="0.2703125" />
         <entry key="..\:/Repositories/ShiftChecklist/app/src/main/res/drawable/ic_launcher_background.xml" value="0.20989583333333334" />
         <entry key="..\:/Repositories/ShiftChecklist/app/src/main/res/drawable/ic_menu_24dp.xml" value="0.18645833333333334" />
+        <entry key="..\:/Repositories/ShiftChecklist/app/src/main/res/layout-w1240dp/header.xml" value="0.16331994645247658" />
         <entry key="..\:/Repositories/ShiftChecklist/app/src/main/res/layout/activiti_missions.xml" value="0.24682971014492755" />
         <entry key="..\:/Repositories/ShiftChecklist/app/src/main/res/layout/activity_assignments.xml" value="0.264" />
         <entry key="..\:/Repositories/ShiftChecklist/app/src/main/res/layout/activity_home.xml" value="0.2509057971014493" />

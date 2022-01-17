@@ -40,7 +40,7 @@ public class AdapterAssignment extends RecyclerView.Adapter<RecyclerView.ViewHol
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         AssignmentViewHolder assignmentViewHolder = (AssignmentViewHolder) holder;
         Assignment assignment = getItem(position);
-        assignmentViewHolder.assignment_LBL_title.setText(assignment.getTitle());
+        assignmentViewHolder.assignment_LBL_title.setText(assignment.getDescription());
 
     }
 

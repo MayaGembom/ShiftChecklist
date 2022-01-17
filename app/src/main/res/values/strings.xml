@@ -4,7 +4,9 @@
     <string name="ASSIGNMENTS_FORM">טופס משימות</string>
     <string name="HOME">בית</string>
     <string name="ASSIGNMENTS">משימות</string>
-    <string name="SETTINGS">הגדרות</string>
+
+    <string name="SETTINGS">פרופיל אישי</string>
+    <string name="LogOut">התנתקות</string>
 
     <string name="openNavDrawer">Navigation Drawer Open</string>
     <string name="closeNavDrawer">Navigation Drawer Close</string>

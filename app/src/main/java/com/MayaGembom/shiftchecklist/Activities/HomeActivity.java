@@ -11,52 +11,73 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.MayaGembom.shiftchecklist.More.Constants;
 import com.MayaGembom.shiftchecklist.Objects.Assignment;
+import com.MayaGembom.shiftchecklist.Objects.MyFirebase;
+import com.MayaGembom.shiftchecklist.Objects.User;
 import com.MayaGembom.shiftchecklist.R;
 import com.MayaGembom.shiftchecklist.Recycler.AdapterAssignment;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
 public class HomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private RecyclerView main_LST_assignments;
-    private Toolbar toolbar;
-    private DrawerLayout drawerLayout;
-    private NavigationView navigationView;
+    private Toolbar main_TLB_toolbar;
+    private DrawerLayout main_DRL_drawer;
+    private NavigationView main_NAV_navigation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_assignments);
 
+        findViews();
+        getUser();
         recyclerView();
         toolbarView();
 
     }
 
+    private void getUser() {
+        FirebaseUser user = MyFirebase.getInstance().getUser();
+        String uid = null;
+        if (user != null)
+            uid = user.getUid();
+        if (uid != null) {
+            User admin = new User("Maya Gembom","",uid);
+            MyFirebase.getInstance().getFdb().getReference(Constants.WORKER_PATH).child(uid).setValue(admin);
+        }
+    }
+
+
+    private void findViews() {
+        main_LST_assignments = findViewById(R.id.main_LST_assignments);
+        main_TLB_toolbar = findViewById(R.id.main_TLB_toolbar);
+        main_DRL_drawer = findViewById(R.id.main_DRL_drawer);
+        main_NAV_navigation = findViewById(R.id.main_NAV_navigation);
+    }
+
     private void toolbarView() {
-        toolbar = findViewById(R.id.assignment_toolbar);
-        setSupportActionBar(toolbar);
-
-        drawerLayout = findViewById(R.id.assignment_LAY_drawer);
-        navigationView = findViewById(R.id.nav_view);
-
+        setSupportActionBar(main_TLB_toolbar);
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(
                 this,
-                drawerLayout,
-                toolbar,
+                main_DRL_drawer,
+                main_TLB_toolbar,
                 R.string.openNavDrawer,
                 R.string.closeNavDrawer
         );
 
-        drawerLayout.addDrawerListener(actionBarDrawerToggle);
+        main_DRL_drawer.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
-        navigationView.setNavigationItemSelectedListener(this);
+        main_NAV_navigation.setNavigationItemSelectedListener(this);
     }
 
     private void recyclerView() {
-        main_LST_assignments = findViewById(R.id.main_LST_assignments);
         ArrayList<Assignment> assignments = generateAssignments();
         AdapterAssignment adapterAssignment = new AdapterAssignment(this, assignments);
 
@@ -70,7 +91,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         adapterAssignment.setAssignmentItemClickListener(new AdapterAssignment.AssignmentItemClickListener(){
             @Override
             public void assignmentItemClicked(Assignment assignment, int position) {
-                Toast.makeText(HomeActivity.this, assignment.getTitle(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(HomeActivity.this, assignment.getDescription(), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -80,65 +101,65 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         ArrayList<Assignment> assignments = new ArrayList<>();
 
         assignments.add(new Assignment()
-                .setTitle("בחירת תאריך משמרת")
+                .setDescription("בחירת תאריך משמרת")
         );
 
         assignments.add(new Assignment()
-                .setTitle("הורדת הכיסאות בשני הברים")
+                .setDescription("הורדת הכיסאות בשני הברים")
         );
         assignments.add(new Assignment()
-                .setTitle("הדלקת מכונת קפה + סאקה חם")
+                .setDescription("הדלקת מכונת קפה + סאקה חם")
         );
         assignments.add(new Assignment()
-                .setTitle("סידור עמדת מלצרים")
+                .setDescription("סידור עמדת מלצרים")
         );
         assignments.add(new Assignment()
-                .setTitle("סידור עמדת פינויים")
+                .setDescription("סידור עמדת פינויים")
         );
         assignments.add(new Assignment()
-                .setTitle("סידור ציוד לוגיסטי")
+                .setDescription("סידור ציוד לוגיסטי")
         );
         assignments.add(new Assignment()
-                .setTitle("סידור עמדת קוקטיילים")
+                .setDescription("סידור עמדת קוקטיילים")
         );
         assignments.add(new Assignment()
-                .setTitle("ניקוי מסך מחשב")
+                .setDescription("ניקוי מסך מחשב")
         );
         assignments.add(new Assignment()
-                .setTitle("השלמת סכו\"ם + קנקני סויה + ג'ינג'ר וווסאבי")
+                .setDescription("השלמת סכו\"ם + קנקני סויה + ג'ינג'ר וווסאבי")
         );
         assignments.add(new Assignment()
-                .setTitle("וידוא מלאים")
+                .setDescription("וידוא מלאים")
         );
         assignments.add(new Assignment()
-                .setTitle("הדלקת אורות")
+                .setDescription("הדלקת אורות")
         );
         assignments.add(new Assignment()
-                .setTitle("הבאת קרח לשני הברים")
+                .setDescription("הבאת קרח לשני הברים")
         );
         assignments.add(new Assignment()
-                .setTitle("הבאת כל מה ששייך לברים מהשטיפה")
+                .setDescription("הבאת כל מה ששייך לברים מהשטיפה")
         );
         assignments.add(new Assignment()
-                .setTitle("משימה א")
+                .setDescription("משימה א")
         );
         assignments.add(new Assignment()
-                .setTitle("משימה א")
+                .setDescription("משימה א")
         );
         assignments.add(new Assignment()
-                .setTitle("משימה א")
+                .setDescription("משימה א")
         );
         assignments.add(new Assignment()
-                .setTitle("משימה א")
+                .setDescription("משימה א")
         );
         assignments.add(new Assignment()
-                .setTitle("משימה א")
+                .setDescription("משימה א")
         );
         assignments.add(new Assignment()
-                .setTitle("משימה א")
+                .setDescription("משימה א")
         );
         assignments.add(new Assignment()
-                .setTitle("משימה א")
+                .setDescription("משימה א")
         );
 
         return assignments;
