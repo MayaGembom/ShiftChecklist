@@ -1,12 +1,18 @@
 <resources>
     <string name="app_name">ShiftChecklist</string>
     <string name="PHONE_NUMBER">כניסה באמצעות מספר טלפון</string>
-    <string name="ASSIGNMENTS_FORM">טופס משימות</string>
+    <string name="ASSIGNMENTS_FORM">משימות משמרת</string>
     <string name="HOME">בית</string>
     <string name="ASSIGNMENTS">משימות</string>
 
-    <string name="SETTINGS">פרופיל אישי</string>
-    <string name="LogOut">התנתקות</string>
+    <string name="USER_PROFILE">פרופיל אישי</string>
+    <string name="Log_Out">התנתקות</string>
+    <string name="FIRST_NAME">שם פרטי</string>
+    <string name="LAST_NAME">שם משפחה</string>
+
+    <string name="Edit_Profile">עריכת פרופיל</string>
+    <string name="Save_Changes">שמירה</string>
+
 
     <string name="openNavDrawer">Navigation Drawer Open</string>
     <string name="closeNavDrawer">Navigation Drawer Close</string>

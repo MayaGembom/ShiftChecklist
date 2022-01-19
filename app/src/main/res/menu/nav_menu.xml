@@ -3,12 +3,23 @@
 
     <item android:title="">
         <menu>
-            <item android:title="@string/SETTINGS"
+            <item
+                android:id="@+id/menu_ITM_profile"
+                android:title="@string/USER_PROFILE"
                 android:icon="@drawable/settings_icon" />
-            <item android:title="@string/ASSIGNMENTS"
+            <item
+                android:id="@+id/menu_ITM_assign"
+                android:title="@string/ASSIGNMENTS"
                 android:icon="@drawable/assignment_icon" />
-
-            <item android:title="@string/LogOut"
+            <item android:title="" />
+            <item android:title="" />
+            <item android:title="" />
+            <item android:title="" />
+            <item android:title="" />
+            <item android:title="" />
+            <item
+                android:id="@+id/menu_ITM_logout"
+                android:title="@string/Log_Out"
                 android:icon="@drawable/logout_icon" />
 
 

@@ -1,12 +1,16 @@
 package com.MayaGembom.shiftchecklist.Activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -15,20 +19,21 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.MayaGembom.shiftchecklist.More.Constants;
 import com.MayaGembom.shiftchecklist.Objects.Assignment;
 import com.MayaGembom.shiftchecklist.Objects.MyFirebase;
-import com.MayaGembom.shiftchecklist.Objects.User;
 import com.MayaGembom.shiftchecklist.R;
 import com.MayaGembom.shiftchecklist.Recycler.AdapterAssignment;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
 
-public class HomeActivity extends BaseActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class Activity_HomeAssignments extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     private RecyclerView main_LST_assignments;
     private Toolbar main_TLB_toolbar;
     private DrawerLayout main_DRL_drawer;
     private NavigationView main_NAV_navigation;
+    private FrameLayout main_FRL_container;
 
 
     @Override
@@ -49,17 +54,20 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         if (user != null)
             uid = user.getUid();
         if (uid != null) {
-            User admin = new User("Maya Gembom","",uid);
-            MyFirebase.getInstance().getFdb().getReference(Constants.WORKER_PATH).child(uid).setValue(admin);
+           //User admin = new User("Maya Gembom","",uid);
+            MyFirebase.getInstance().getFdb().getReference(Constants.USERS_PATH).child(uid).setValue("");
         }
     }
 
 
     private void findViews() {
         main_LST_assignments = findViewById(R.id.main_LST_assignments);
+
         main_TLB_toolbar = findViewById(R.id.main_TLB_toolbar);
         main_DRL_drawer = findViewById(R.id.main_DRL_drawer);
         main_NAV_navigation = findViewById(R.id.main_NAV_navigation);
+        main_FRL_container = findViewById(R.id.main_FRL_container);
+
     }
 
     private void toolbarView() {
@@ -91,7 +99,7 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
         adapterAssignment.setAssignmentItemClickListener(new AdapterAssignment.AssignmentItemClickListener(){
             @Override
             public void assignmentItemClicked(Assignment assignment, int position) {
-                Toast.makeText(HomeActivity.this, assignment.getDescription(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(Activity_HomeAssignments.this, assignment.getDescription(), Toast.LENGTH_SHORT).show();
 
             }
         });
@@ -167,13 +175,41 @@ public class HomeActivity extends BaseActivity implements NavigationView.OnNavig
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
+        openFragment(item);
+        main_DRL_drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+
+    private void openFragment(MenuItem item) {
+        switch (item.getItemId())
+        {
+            case R.id.menu_ITM_profile:
+                Intent newIntent = new Intent(this, Activity_Register.class);
+                startActivity(newIntent);
+            case R.id.menu_ITM_assign:
+                break;
+            case R.id.menu_ITM_logout:
+                signOut();
+                break;
+        }
+    }
+
+    private void signOut() {
+        //MyFirebase.getInstance().getFdb().getReference(Constants.WORKER_PATH).child(currentWorker.getUid()).removeEventListener(workerChanged);
+        FirebaseAuth auth = MyFirebase.getInstance().getAuth();
+        if (auth != null) {
+            FirebaseUser user = auth.getCurrentUser();
+            auth.signOut();
+        }
+        Intent i = new Intent(Activity_HomeAssignments.this, Activity_Login.class);
+        i.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(i);
+        finish();
     }
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
 
     }
-
 
 }

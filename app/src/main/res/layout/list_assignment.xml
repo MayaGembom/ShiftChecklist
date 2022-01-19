@@ -2,7 +2,6 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:cardCornerRadius="20dp"
@@ -33,13 +32,10 @@
             android:layout_marginEnd="8dp"
             android:ellipsize="end"
             android:maxLines="2"
-            android:text="ASSIGNMENT_TITLE"
             android:layout_toEndOf="@+id/assignment_IMG_start"
             android:textColorHint="@color/black"
             app:icon="@drawable/ic_baseline_linear_scale_24"
             android:textSize="18sp" />
-
-
 
     </RelativeLayout>
 

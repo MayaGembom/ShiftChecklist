@@ -2,24 +2,21 @@ package com.MayaGembom.shiftchecklist.Objects;
 
 public class User {
 
-    private String name;
-    private String imgUrl;
+    private String userLastName;
+    private String userName;
+    private String imageURL;
     private String uid;
+    private String userPhoneNumber;
 
-
-    public User(String name, String imgUrl, String uid) {
-        this.name = name;
-        this.imgUrl = "default";
-        this.uid = uid;
+    public User() {
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public User setName(String name) {
-        this.name = name;
-        return this;
+    public User(String id, String userLastName, String username,String userPhoneNumber, String imageURL) {
+        this.uid = id;
+        this.userLastName = userLastName;
+        this.userName = username;
+        this.userPhoneNumber = userPhoneNumber;
+        this.imageURL = "default";
     }
 
     public String getUid() {
@@ -30,4 +27,25 @@ public class User {
         this.uid = uid;
         return this;
     }
+
+    public String getUserLastName() {
+        return userLastName;
+    }
+
+    public void setUserLastName(String userLastName) {
+        this.userLastName = userLastName;
+    }
+
+    public String getUsername() {
+        return userName;
+    }
+
+    public void setUsername(String username) {
+        this.userName = username;
+    }
+
+    public String getImageURL() {
+        return imageURL;
+    }
+
 }
