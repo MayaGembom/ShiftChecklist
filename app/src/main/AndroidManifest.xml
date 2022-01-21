@@ -9,6 +9,7 @@
         android:label="shift checklist"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:requestLegacyExternalStorage="true"
         android:theme="@style/Theme.ShiftChecklistApp">
 
         <!-- ACTIVITIES -->

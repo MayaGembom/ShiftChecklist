@@ -16,7 +16,7 @@ public class User {
         this.userLastName = userLastName;
         this.userName = username;
         this.userPhoneNumber = userPhoneNumber;
-        this.imageURL = "default";
+        this.imageURL = imageURL;
     }
 
     public String getUid() {
@@ -48,4 +48,8 @@ public class User {
         return imageURL;
     }
 
+    public User setImageURL(String imageURL) {
+        this.imageURL = imageURL;
+        return this;
+    }
 }

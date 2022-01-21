@@ -2,8 +2,12 @@ package com.MayaGembom.shiftchecklist.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -19,21 +23,31 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.MayaGembom.shiftchecklist.More.Constants;
 import com.MayaGembom.shiftchecklist.Objects.Assignment;
 import com.MayaGembom.shiftchecklist.Objects.MyFirebase;
+import com.MayaGembom.shiftchecklist.Objects.User;
 import com.MayaGembom.shiftchecklist.R;
 import com.MayaGembom.shiftchecklist.Recycler.AdapterAssignment;
+import com.bumptech.glide.Glide;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
 public class Activity_HomeAssignments extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
-
+    private NavigationView main_NAV_navigation;
+    private ImageView header_IMG_profile;
+    private TextView header_LBL_name;
     private RecyclerView main_LST_assignments;
     private Toolbar main_TLB_toolbar;
     private DrawerLayout main_DRL_drawer;
-    private NavigationView main_NAV_navigation;
     private FrameLayout main_FRL_container;
+
+    private User user;
 
 
     @Override
@@ -42,24 +56,35 @@ public class Activity_HomeAssignments extends AppCompatActivity implements Navig
         setContentView(R.layout.activity_assignments);
 
         findViews();
-        getUser();
+        readProfileFromDB();
         recyclerView();
         toolbarView();
 
     }
 
-    private void getUser() {
-        FirebaseUser user = MyFirebase.getInstance().getUser();
-        String uid = null;
-        if (user != null)
-            uid = user.getUid();
-        if (uid != null) {
-           //User admin = new User("Maya Gembom","",uid);
-            MyFirebase.getInstance().getFdb().getReference(Constants.USERS_PATH).child(uid).setValue("");
-        }
+    private void readProfileFromDB(){
+        FirebaseUser firebaseUser = MyFirebase.getInstance().getUser();
+        DatabaseReference myRef = MyFirebase.getInstance().getFdb().getReference("Users").child(firebaseUser.getUid()).child(MyFirebase.getInstance().getUser().getPhoneNumber());
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                user = dataSnapshot.getValue(User.class); //load user from DB
+//                if (!user.getImageURL().equals("default")) {
+                   Glide.with(Activity_HomeAssignments.this).load(user.getImageURL()).into(header_IMG_profile);
+                //  }
+                updateProfile();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
-
+    private void updateProfile() {
+        header_LBL_name.setText(user.getUsername() + " " + user.getUserLastName());
+    }
     private void findViews() {
         main_LST_assignments = findViewById(R.id.main_LST_assignments);
 
@@ -68,6 +93,10 @@ public class Activity_HomeAssignments extends AppCompatActivity implements Navig
         main_NAV_navigation = findViewById(R.id.main_NAV_navigation);
         main_FRL_container = findViewById(R.id.main_FRL_container);
 
+
+        View header = main_NAV_navigation.getHeaderView(0);
+        header_IMG_profile = header.findViewById(R.id.header_IMG_profile);
+        header_LBL_name = header.findViewById(R.id.header_LBL_name);
     }
 
     private void toolbarView() {
