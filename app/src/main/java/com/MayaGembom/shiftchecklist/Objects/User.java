@@ -1,14 +1,17 @@
 package com.MayaGembom.shiftchecklist.Objects;
 
-public class User {
+public abstract class User {
 
     private String userLastName;
     private String userName;
     private String imageURL;
     private String uid;
     private String userPhoneNumber;
+    private int workerID;
+
 
     public User() {
+
     }
 
     public User(String id, String userLastName, String username,String userPhoneNumber, String imageURL) {
@@ -17,6 +20,25 @@ public class User {
         this.userName = username;
         this.userPhoneNumber = userPhoneNumber;
         this.imageURL = imageURL;
+    }
+
+
+    public int getWorkerID() {
+        return workerID;
+    }
+
+    public User setWorkerID(int workerID) {
+        this.workerID = workerID;
+        return this;
+    }
+
+    public String getUserPhoneNumber() {
+        return userPhoneNumber;
+    }
+
+    public User setUserPhoneNumber(String userPhoneNumber) {
+        this.userPhoneNumber = userPhoneNumber;
+        return this;
     }
 
     public String getUid() {

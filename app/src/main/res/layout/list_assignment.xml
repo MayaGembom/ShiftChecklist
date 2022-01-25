@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardCornerRadius="20dp"
+    app:cardCornerRadius="10dp"
     android:elevation="8dp"
     app:cardElevation="8dp"
     android:layout_margin="10dp"
@@ -13,7 +13,7 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:background="#FFC7F2">
 
 
@@ -35,8 +35,10 @@
             android:layout_marginEnd="8dp"
             android:ellipsize="end"
             android:maxLines="2"
-            android:textColorHint="@color/black"
+            android:minLines="2"
+            android:textColor="@color/black"
             android:textSize="18sp"
+            android:textAlignment="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/assignment_IMG_start"
             app:layout_constraintTop_toTopOf="parent" />

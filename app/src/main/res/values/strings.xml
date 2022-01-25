@@ -15,6 +15,9 @@
     <string name="Done">בוצע</string>
     <string name="NotDone">לא בוצע</string>
     <string name="Note">הוספת הערה (אופציונלי)</string>
+    <string name="Employee">עובד</string>
+    <string name="ShiftManager">אחמ"ש</string>
+    <string name="Owner">בעלים</string>
 
 
     <string name="openNavDrawer">Navigation Drawer Open</string>
