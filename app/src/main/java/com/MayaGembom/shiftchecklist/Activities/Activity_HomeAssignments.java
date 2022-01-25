@@ -70,9 +70,9 @@ public class Activity_HomeAssignments extends AppCompatActivity implements Navig
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(User.class); //load user from DB
-//                if (!user.getImageURL().equals("default")) {
+                if (!user.getImageURL().equals("default")) {
                    Glide.with(Activity_HomeAssignments.this).load(user.getImageURL()).into(header_IMG_profile);
-                //  }
+                  }
                 updateProfile();
             }
             @Override
@@ -92,7 +92,6 @@ public class Activity_HomeAssignments extends AppCompatActivity implements Navig
         main_DRL_drawer = findViewById(R.id.main_DRL_drawer);
         main_NAV_navigation = findViewById(R.id.main_NAV_navigation);
         main_FRL_container = findViewById(R.id.main_FRL_container);
-
 
         View header = main_NAV_navigation.getHeaderView(0);
         header_IMG_profile = header.findViewById(R.id.header_IMG_profile);
@@ -128,8 +127,7 @@ public class Activity_HomeAssignments extends AppCompatActivity implements Navig
         adapterAssignment.setAssignmentItemClickListener(new AdapterAssignment.AssignmentItemClickListener(){
             @Override
             public void assignmentItemClicked(Assignment assignment, int position) {
-                Toast.makeText(Activity_HomeAssignments.this, assignment.getDescription(), Toast.LENGTH_SHORT).show();
-
+                assignment.setVisibility(!assignment.isVisibility());
             }
         });
     }
@@ -164,39 +162,6 @@ public class Activity_HomeAssignments extends AppCompatActivity implements Navig
         );
         assignments.add(new Assignment()
                 .setDescription("השלמת סכו\"ם + קנקני סויה + ג'ינג'ר וווסאבי")
-        );
-        assignments.add(new Assignment()
-                .setDescription("וידוא מלאים")
-        );
-        assignments.add(new Assignment()
-                .setDescription("הדלקת אורות")
-        );
-        assignments.add(new Assignment()
-                .setDescription("הבאת קרח לשני הברים")
-        );
-        assignments.add(new Assignment()
-                .setDescription("הבאת כל מה ששייך לברים מהשטיפה")
-        );
-        assignments.add(new Assignment()
-                .setDescription("משימה א")
-        );
-        assignments.add(new Assignment()
-                .setDescription("משימה א")
-        );
-        assignments.add(new Assignment()
-                .setDescription("משימה א")
-        );
-        assignments.add(new Assignment()
-                .setDescription("משימה א")
-        );
-        assignments.add(new Assignment()
-                .setDescription("משימה א")
-        );
-        assignments.add(new Assignment()
-                .setDescription("משימה א")
-        );
-        assignments.add(new Assignment()
-                .setDescription("משימה א")
         );
 
         return assignments;

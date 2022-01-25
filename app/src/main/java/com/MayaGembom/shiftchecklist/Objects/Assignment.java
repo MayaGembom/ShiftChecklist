@@ -3,6 +3,8 @@ package com.MayaGembom.shiftchecklist.Objects;
 public class Assignment {
 
     private String description = "";
+    private boolean visibility = false;
+
 
     public Assignment() {
     }
@@ -16,4 +18,12 @@ public class Assignment {
         return this;
     }
 
+    public boolean isVisibility() {
+        return visibility;
+    }
+
+    public Assignment setVisibility(boolean visibility) {
+        this.visibility = visibility;
+        return this;
+    }
 }

@@ -4,7 +4,10 @@ import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import com.MayaGembom.shiftchecklist.Objects.Assignment;
 import com.MayaGembom.shiftchecklist.R;
@@ -42,6 +45,8 @@ public class AdapterAssignment extends RecyclerView.Adapter<RecyclerView.ViewHol
         Assignment assignment = getItem(position);
         assignmentViewHolder.assignment_LBL_title.setText(assignment.getDescription());
 
+        boolean isVisible = assignment.isVisibility();
+        ((AssignmentViewHolder) holder).constraintLayout.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
 
     @Override
@@ -61,15 +66,21 @@ public class AdapterAssignment extends RecyclerView.Adapter<RecyclerView.ViewHol
     public class AssignmentViewHolder extends RecyclerView.ViewHolder {
 
         public MaterialTextView assignment_LBL_title;
+        TextView txt ;
+
+        ConstraintLayout constraintLayout;
 
         public AssignmentViewHolder(final View itemView) {
             super(itemView);
             this.assignment_LBL_title = itemView.findViewById(R.id.assignment_LBL_title);
+            this.constraintLayout = itemView.findViewById(R.id.assignment_LAY_expanded);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     assignmentItemClickListener.assignmentItemClicked(getItem(getAdapterPosition()), getAdapterPosition());
+
+                    notifyItemChanged(getAdapterPosition());
                 }
             });
 

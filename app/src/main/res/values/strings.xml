@@ -12,6 +12,9 @@
 
     <string name="Edit_Profile">עריכת פרופיל</string>
     <string name="Save_Changes">שמירה</string>
+    <string name="Done">בוצע</string>
+    <string name="NotDone">לא בוצע</string>
+    <string name="Note">הוספת הערה (אופציונלי)</string>
 
 
     <string name="openNavDrawer">Navigation Drawer Open</string>
