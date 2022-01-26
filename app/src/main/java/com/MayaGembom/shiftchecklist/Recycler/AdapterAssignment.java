@@ -1,11 +1,8 @@
 package com.MayaGembom.shiftchecklist.Recycler;
 
-import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
@@ -17,12 +14,10 @@ import java.util.ArrayList;
 
 public class AdapterAssignment extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-    private Activity activity;
     private ArrayList<Assignment> assignments = new ArrayList<>();
     private AssignmentItemClickListener assignmentItemClickListener;
 
-    public AdapterAssignment(Activity activity, ArrayList<Assignment> assignments) {
-        this.activity = activity;
+    public AdapterAssignment(ArrayList<Assignment> assignments) {
         this.assignments = assignments;
     }
 
@@ -66,9 +61,7 @@ public class AdapterAssignment extends RecyclerView.Adapter<RecyclerView.ViewHol
     public class AssignmentViewHolder extends RecyclerView.ViewHolder {
 
         public MaterialTextView assignment_LBL_title;
-        TextView txt ;
-
-        ConstraintLayout constraintLayout;
+        public ConstraintLayout constraintLayout;
 
         public AssignmentViewHolder(final View itemView) {
             super(itemView);

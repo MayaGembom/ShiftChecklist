@@ -71,4 +71,7 @@ dependencies {
     implementation 'com.github.Drjacky:ImagePicker:1.7.10'
     implementation 'com.android.support:multidex:1.0.3'
 
+    // CoordinatorLayout
+    implementation "androidx.coordinatorlayout:coordinatorlayout:1.1.0"
 }
+

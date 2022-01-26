@@ -69,7 +69,7 @@ public class Activity_Login extends AppCompatActivity {
                 public void onSuccess(DataSnapshot dataSnapshot) {
                     if(dataSnapshot.exists()){
                         //TODO save dataSnapshot
-                        Intent intent = new Intent(Activity_Login.this, Activity_HomeAssignments.class);
+                        Intent intent = new Intent(Activity_Login.this, Activity_Main.class);
                         startActivity(intent);
                         finish();
                     }

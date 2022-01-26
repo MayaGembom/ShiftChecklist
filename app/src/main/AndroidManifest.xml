@@ -14,7 +14,7 @@
 
         <!-- ACTIVITIES -->
         <activity
-            android:name=".Activities.Activity_HomeAssignments"
+            android:name=".Activities.Activity_Main"
             android:exported="true"
             android:screenOrientation="portrait"/>
         <activity

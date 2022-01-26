@@ -4,16 +4,10 @@ package com.MayaGembom.shiftchecklist.Activities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
-
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.WorkSource;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,26 +19,20 @@ import com.MayaGembom.shiftchecklist.More.Constants;
 import com.MayaGembom.shiftchecklist.Objects.Employee;
 import com.MayaGembom.shiftchecklist.Objects.Owner;
 import com.MayaGembom.shiftchecklist.Objects.ShiftManager;
-import com.bumptech.glide.Glide;
 import com.github.drjacky.imagepicker.ImagePicker;
 
 import com.MayaGembom.shiftchecklist.Objects.MyFirebase;
 
-import com.MayaGembom.shiftchecklist.Objects.User;
 import com.MayaGembom.shiftchecklist.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
-import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.textfield.TextInputLayout;
 
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -52,7 +40,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class Activity_Register extends AppCompatActivity {
     private CircleImageView profile_IMG_user;
     private TextInputLayout register_EDT_first_name,register_EDT_last_name;
-    private TextView profile_LBL_logout;
     private MaterialButton register_BTN_complete;
     private MaterialButtonToggleGroup toggle_BTN_user;
     private MaterialButton register_BTN_employee;
@@ -132,12 +119,6 @@ public class Activity_Register extends AppCompatActivity {
             }
         });
 
-        profile_LBL_logout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
 
     private void takePicture() {
@@ -184,7 +165,7 @@ public class Activity_Register extends AppCompatActivity {
                         owner.setWorkerID(currentWorkerID);
                         myRef.setValue(owner);
                     }
-                    Intent myIntent = new Intent(Activity_Register.this,Activity_HomeAssignments.class);
+                    Intent myIntent = new Intent(Activity_Register.this, Activity_Main.class);
                     myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(myIntent);
                     finish();
@@ -194,14 +175,11 @@ public class Activity_Register extends AppCompatActivity {
     });
     }
 
-
-
     private void findViews() {
         profile_IMG_user = findViewById(R.id.profile_IMG_user);
         register_EDT_first_name = findViewById(R.id.register_EDT_first_name);
         register_EDT_last_name = findViewById(R.id.register_EDT_last_name);
         register_BTN_complete = findViewById(R.id.register_BTN_register);
-        profile_LBL_logout = findViewById(R.id.profile_LBL_logout);
         toggle_BTN_user = findViewById(R.id.toggle_BTN_user);
         register_BTN_employee = findViewById(R.id.register_BTN_employee);
 
