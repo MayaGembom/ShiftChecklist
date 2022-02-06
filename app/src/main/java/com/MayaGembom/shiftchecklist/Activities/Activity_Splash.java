@@ -4,32 +4,31 @@ import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.View;
 import android.view.animation.LinearInterpolator;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import com.MayaGembom.shiftchecklist.Objects.Employee;
 import com.MayaGembom.shiftchecklist.Objects.MyFirebase;
-import com.MayaGembom.shiftchecklist.Objects.Owner;
-import com.MayaGembom.shiftchecklist.Objects.ShiftManager;
+
 import com.MayaGembom.shiftchecklist.R;
 import com.airbnb.lottie.LottieAnimationView;
-import com.bumptech.glide.Glide;
-import com.google.android.material.navigation.NavigationView;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
+
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.ValueEventListener;
+
 
 public class Activity_Splash extends AppCompatActivity {
 
-    public final int ANIMATION_DURATION = 4000;
+    public final int ANIMATION_DURATION = 3200;
     private LottieAnimationView splash_LAV_animation;
-
+    private static String workerID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,6 +36,7 @@ public class Activity_Splash extends AppCompatActivity {
         setContentView(R.layout.activity_splash);
 
         findViews();
+        readWorkerIdFromDB();
         startAnimation(splash_LAV_animation);
 
     }
@@ -100,10 +100,33 @@ public class Activity_Splash extends AppCompatActivity {
         finish();
     }
 
-    private void findViews() {
+    private void readWorkerIdFromDB() {
+        FirebaseUser firebaseUser = MyFirebase.getInstance().getUser();
+        String userId = firebaseUser.getUid();
+        DatabaseReference myRef = MyFirebase.getInstance().getFdb().getReference("Users").child(userId).child("workerID");
+        myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.isSuccessful()){
+                    workerID = String.valueOf(task.getResult().getValue());
+                }
+            }
+        });
+    }
 
+
+    private void findViews() {
         splash_LAV_animation = findViewById(R.id.splash_LAV_animation);
 
-
     }
+
+    public static int getWorkerID() {
+        return Integer.parseInt(workerID);
+    }
+
+    public Activity_Splash setWorkerID(String workerID) {
+        this.workerID = workerID;
+        return this;
+    }
+
 }

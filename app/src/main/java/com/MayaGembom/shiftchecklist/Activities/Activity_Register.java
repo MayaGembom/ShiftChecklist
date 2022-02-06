@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -25,6 +26,7 @@ import com.MayaGembom.shiftchecklist.Objects.MyFirebase;
 
 import com.MayaGembom.shiftchecklist.R;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
@@ -33,6 +35,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.database.DataSnapshot;
 
 import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.storage.StorageReference;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -45,7 +48,7 @@ public class Activity_Register extends AppCompatActivity {
     private MaterialButton register_BTN_employee;
     private ProgressDialog progressDialog;
     private Uri imageUri;
-
+    private String myDownloadUrl;
     private Employee employee;
     private ShiftManager shiftManager;
     private Owner owner;
@@ -70,7 +73,15 @@ public class Activity_Register extends AppCompatActivity {
             imageUri = data.getData();
             MyFirebase.getInstance().getFst().getReference(Constants.PROFILE_FOLDER).child(MyFirebase.getInstance().getUser().getUid()).putFile(imageUri);
             profile_IMG_user.setImageURI(imageUri);
-           // header_IMG_profile.setImageURI(imageUri);
+
+            StorageReference storeRef = MyFirebase.getInstance().getFst().getReference(Constants.PROFILE_FOLDER).child(MyFirebase.getInstance().getUser().getUid());
+            storeRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    myDownloadUrl = uri.toString();
+                    //Log.d("pttttt", "onSuccess: " +myDownloadUrl);
+                }
+            });
         }
     }
 
@@ -113,9 +124,9 @@ public class Activity_Register extends AppCompatActivity {
                 if (TextUtils.isEmpty(userName_text) ||TextUtils.isEmpty(userLastName_text) || imageUri == null){
                     Toast.makeText(Activity_Register.this, "נא מלא/י תמונה ושם פרטי+משפחה", Toast.LENGTH_SHORT).show();
                 }else
-                    progressDialog.setMessage("מאחסן את המידע..");
-                    progressDialog.show();
-                    registerNow(userName_text, userLastName_text,userID, userPhone, imageUri);
+                    //progressDialog.setMessage("מאחסן את המידע..");
+                    //progressDialog.show();
+                    registerNow(userName_text, userLastName_text,userID, userPhone);
             }
         });
 
@@ -131,37 +142,25 @@ public class Activity_Register extends AppCompatActivity {
                 .start();
     }
 
-    private void registerNow(final String userFirstName,final String userLastName, String userId, String userPhone, Uri imageUri){
-        String getuser = "";
-        if(currentWorkerID == 3)
-        {
-            getuser = "Employee";
-        }
-        else if(currentWorkerID == 2){
-            getuser = "ShiftManager";
-        }
-        else if(currentWorkerID == 1){
-            getuser = "Owner";
-        }
-
-        DatabaseReference myRef = MyFirebase.getInstance().getFdb().getReference("Users").child(getuser).child(userId);
+    private void registerNow(final String userFirstName,final String userLastName, String userId, String userPhone){
+        DatabaseReference myRef = MyFirebase.getInstance().getFdb().getReference("Users").child(userId);
         myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if(task.isSuccessful()){
                     if(currentWorkerID == 3)
                     {
-                        employee = new Employee(userId, userLastName, userFirstName,userPhone, imageUri.toString());
+                        employee = new Employee(userId, userLastName, userFirstName,userPhone, myDownloadUrl);
                         employee.setWorkerID(currentWorkerID);
                         myRef.setValue(employee);
                     }
                     else if(currentWorkerID == 2){
-                        shiftManager = new ShiftManager(userId, userLastName, userFirstName,userPhone, imageUri.toString());
+                        shiftManager = new ShiftManager(userId, userLastName, userFirstName,userPhone, myDownloadUrl);
                         shiftManager.setWorkerID(currentWorkerID);
                         myRef.setValue(shiftManager);
                     }
                     else if(currentWorkerID == 1){
-                        owner = new Owner(userId, userLastName, userFirstName,userPhone, imageUri.toString());
+                        owner = new Owner(userId, userLastName, userFirstName,userPhone, myDownloadUrl);
                         owner.setWorkerID(currentWorkerID);
                         myRef.setValue(owner);
                     }

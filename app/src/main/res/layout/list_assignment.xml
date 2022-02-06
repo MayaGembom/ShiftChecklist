@@ -17,30 +17,37 @@
         android:background="#FFC7F2">
 
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/assignment_IMG_start"
-            android:layout_width="36dp"
-            android:layout_height="36dp"
-            android:src="@drawable/ic_baseline_linear_scale_24"
-            android:adjustViewBounds="true"
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/assignment_TXT_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=" "
+            android:maxLines="2"
+            android:minLines="2"
+            android:gravity="center"
+            android:fontFamily="@font/varela_round"
+            android:layout_marginLeft="4dp"
+            android:textSize="21sp"
+            android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:scaleType="fitCenter"
             />
 
-        <TextView
+        <com.google.android.material.textview.MaterialTextView
             android:id="@+id/assignment_LBL_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
+            android:layout_marginStart="2dp"
             android:ellipsize="end"
             android:maxLines="2"
             android:minLines="2"
             android:textColor="@color/black"
-            android:textSize="18sp"
-            android:textAlignment="center"
+            android:textSize="21sp"
+            android:fontFamily="@font/varela_round"
+            android:gravity="center_vertical"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/assignment_IMG_start"
+            app:layout_constraintStart_toEndOf="@+id/assignment_TXT_number"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.constraintlayout.widget.ConstraintLayout

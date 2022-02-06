@@ -1,5 +1,6 @@
 package com.MayaGembom.shiftchecklist.Recycler;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,7 +40,11 @@ public class AdapterAssignment extends RecyclerView.Adapter<RecyclerView.ViewHol
         AssignmentViewHolder assignmentViewHolder = (AssignmentViewHolder) holder;
         Assignment assignment = getItem(position);
         assignmentViewHolder.assignment_LBL_title.setText(assignment.getDescription());
-
+        assignmentViewHolder.assignment_TXT_number.setText(position + ".");
+        if(position ==  0){
+            assignmentViewHolder.assignment_LBL_title.setGravity(Gravity.CENTER);
+            assignmentViewHolder.assignment_TXT_number.setText(" ");
+        }
         boolean isVisible = assignment.isVisibility();
         ((AssignmentViewHolder) holder).constraintLayout.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
@@ -49,7 +54,7 @@ public class AdapterAssignment extends RecyclerView.Adapter<RecyclerView.ViewHol
         return assignments.size();
     }
 
-    private Assignment getItem(int position) {
+    public Assignment getItem(int position) {
         return assignments.get(position);
     }
 
@@ -59,20 +64,21 @@ public class AdapterAssignment extends RecyclerView.Adapter<RecyclerView.ViewHol
 
 
     public class AssignmentViewHolder extends RecyclerView.ViewHolder {
-
+        public MaterialTextView assignment_TXT_number;
         public MaterialTextView assignment_LBL_title;
         public ConstraintLayout constraintLayout;
 
         public AssignmentViewHolder(final View itemView) {
             super(itemView);
+            this.assignment_TXT_number = itemView.findViewById(R.id.assignment_TXT_number);
             this.assignment_LBL_title = itemView.findViewById(R.id.assignment_LBL_title);
             this.constraintLayout = itemView.findViewById(R.id.assignment_LAY_expanded);
+
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     assignmentItemClickListener.assignmentItemClicked(getItem(getAdapterPosition()), getAdapterPosition());
-
                     notifyItemChanged(getAdapterPosition());
                 }
             });

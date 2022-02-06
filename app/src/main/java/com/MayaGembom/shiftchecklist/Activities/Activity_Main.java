@@ -2,6 +2,7 @@ package com.MayaGembom.shiftchecklist.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -15,13 +16,14 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
-import com.MayaGembom.shiftchecklist.Fragments.Fragment_Assignments;
+import com.MayaGembom.shiftchecklist.Fragments.Fragment_EmployeeAssignments;
 import com.MayaGembom.shiftchecklist.Objects.Employee;
 import com.MayaGembom.shiftchecklist.Objects.MyFirebase;
 import com.MayaGembom.shiftchecklist.Objects.Owner;
 import com.MayaGembom.shiftchecklist.Objects.ShiftManager;
 import com.MayaGembom.shiftchecklist.R;
 import com.bumptech.glide.Glide;
+
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -30,7 +32,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
-public class Activity_Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
+public class Activity_Main extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private Toolbar main_TLB_toolbar;
     private DrawerLayout main_DRL_drawer;
@@ -50,11 +52,12 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
         setContentView(R.layout.activity_main);
 
         findViews();
+        initListener();
         toolbarView();
-        readProfileFromDB();
+        Log.d("ptttttt", "onCreate: on");
+
 
     }
-
 
     private void findViews() {
         main_TLB_toolbar = findViewById(R.id.main_TLB_toolbar);
@@ -82,7 +85,6 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
         main_NAV_navigation.setNavigationItemSelectedListener(this);
     }
 
-
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         openFragment(item);
@@ -91,13 +93,12 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
     }
 
     private void openFragment(MenuItem item) {
-        switch (item.getItemId())
-        {
+        switch (item.getItemId()) {
             case R.id.menu_ITM_profile:
                 Intent newIntent = new Intent(this, Activity_Register.class);
                 startActivity(newIntent);
             case R.id.menu_ITM_assign:
-                getSupportFragmentManager().beginTransaction().replace(main_FRL_container.getId(), new Fragment_Assignments()).commit();
+                getSupportFragmentManager().beginTransaction().replace(main_FRL_container.getId(), new Fragment_EmployeeAssignments()).commit();
                 main_TLB_toolbar.setTitle("טופס משימות");
                 break;
             case R.id.menu_ITM_logout:
@@ -119,40 +120,29 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
     }
 
 
-    private void updateProfile(int currentWorkerID) {
-        if(currentWorkerID == 3)
-        {
-            header_LBL_name.setText(employee.getUsername() + " " + employee.getUserLastName());
-        }
-        else if(currentWorkerID == 2){
-            header_LBL_name.setText(shiftManager.getUsername() + " " + shiftManager.getUserLastName());
-        }
-        else if(currentWorkerID == 1){
-            header_LBL_name.setText(owner.getUsername() + " " + owner.getUserLastName());
-        }
+
+    @Override
+    public void onBackPressed() {
+        if (main_DRL_drawer.isDrawerOpen(GravityCompat.START)) {
+            main_DRL_drawer.closeDrawer(GravityCompat.START);
+        } else
+            super.onBackPressed();
     }
-    private void readProfileFromDB(){
+
+
+
+
+    private void initListener(){
         FirebaseUser firebaseUser = MyFirebase.getInstance().getUser();
-        int currentWorkerID = Activity_Register.getCurrentWorkerID();
-        String getuser = "";
-        if(currentWorkerID == 3)
-        {
-            getuser = "Employee";
-        }
-        else if(currentWorkerID == 2){
-            getuser = "ShiftManager";
-        }
-        else if(currentWorkerID == 1){
-            getuser = "Owner";
-        }
-        DatabaseReference myRef = MyFirebase.getInstance().getFdb().getReference("Users").child(getuser).child(firebaseUser.getUid());
+        DatabaseReference myRef = MyFirebase.getInstance().getFdb().getReference("Users").child(firebaseUser.getUid());
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int currentWorkerID = Activity_Register.getCurrentWorkerID();
+                int currentWorkerID = Activity_Splash.getWorkerID();
                 if(currentWorkerID == 3)
                 {
                     employee = dataSnapshot.getValue(Employee.class); //load user from DB
+                    header_LBL_name.setText(employee.getUsername() + " " + employee.getUserLastName());
                     if (!employee.getImageURL().equals("default")) {
                         Glide.with(Activity_Main.this).load(employee.getImageURL()).into(header_IMG_profile);
                     }
@@ -160,17 +150,18 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
 
                 if(currentWorkerID == 2){
                     shiftManager = dataSnapshot.getValue(ShiftManager.class); //load user from DB
+                    header_LBL_name.setText(shiftManager.getUsername() + " " + shiftManager.getUserLastName());
                     if (!shiftManager.getImageURL().equals("default")) {
                         Glide.with(Activity_Main.this).load(shiftManager.getImageURL()).into(header_IMG_profile);
                     }
                 }
                 if(currentWorkerID == 1){
                     owner = dataSnapshot.getValue(Owner.class); //load user from DB
+                    header_LBL_name.setText(owner.getUsername() + " " + owner.getUserLastName());
                     if (!owner.getImageURL().equals("default")) {
                         Glide.with(Activity_Main.this).load(owner.getImageURL()).into(header_IMG_profile);
                     }
                 }
-                updateProfile(currentWorkerID);
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -178,5 +169,31 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
             }
         });
     }
-
 }
+
+    //private void showItems() {
+   //    Menu menu = main_NAV_navigation.getMenu();
+   //    if (currentWorker != null) {
+   //        hideItems();
+   //        if (currentWorker.getIsAccepted()) {
+   //            switch (currentWorker.getType()) {
+   //                case Constants.MANAGER_ID:
+   //                    menu.findItem(R.id.menu_ITM_stats).setVisible(true);
+   //                    menu.findItem(R.id.menu_ITM_assign).setVisible(true);
+   //                    menu.findItem(R.id.menu_ITM_profile).setVisible(true);
+   //                    break;
+   //                case Constants.WORKER_ID:
+   //                    menu.findItem(R.id.menu_ITM_assign).setVisible(true);
+   //                    menu.findItem(R.id.menu_ITM_profile).setVisible(true);
+   //                    break;
+   //                case Constants.HR_ID:
+   //                    menu.findItem(R.id.menu_ITM_assign).setVisible(true);
+   //                    menu.findItem(R.id.menu_ITM_requests).setVisible(true);
+   //                    menu.findItem(R.id.menu_ITM_profile).setVisible(true);
+   //                    break;
+   //            }
+   //        } else {
+   //            getSupportFragmentManager().beginTransaction().replace(main_FRL_container.getId(), new Fragment_Unauthorized()).commitAllowingStateLoss();
+   //        }
+   //    }
+   //}

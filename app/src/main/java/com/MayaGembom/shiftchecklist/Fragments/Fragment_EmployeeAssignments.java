@@ -19,7 +19,7 @@ import com.MayaGembom.shiftchecklist.Recycler.AdapterAssignment;
 
 import java.util.ArrayList;
 
-public class Fragment_Assignments extends Fragment {
+public class Fragment_EmployeeAssignments extends Fragment {
 
     private RecyclerView main_LST_assignments;
     private View view;
@@ -37,8 +37,6 @@ public class Fragment_Assignments extends Fragment {
     }
 
 
-
-
     private void findViews() {
         main_LST_assignments = view.findViewById(R.id.main_LST_assignments);
 
@@ -47,17 +45,23 @@ public class Fragment_Assignments extends Fragment {
     private void recyclerView() {
         ArrayList<Assignment> assignments = generateAssignments();
         AdapterAssignment adapterAssignment = new AdapterAssignment(assignments);
+        Assignment dateAssignment = adapterAssignment.getItem(0);
+        dateAssignment.setDescription("בחירת תאריך משמרת");
 
         // Vertically
         main_LST_assignments.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
-
         main_LST_assignments.setHasFixedSize(true);
         main_LST_assignments.setItemAnimator(new DefaultItemAnimator());
         main_LST_assignments.setAdapter(adapterAssignment);
 
+
         adapterAssignment.setAssignmentItemClickListener(new AdapterAssignment.AssignmentItemClickListener(){
             @Override
             public void assignmentItemClicked(Assignment assignment, int position) {
+                if(position == 0)
+                {
+                    assignment.setVisibility(true);
+                }
                 assignment.setVisibility(!assignment.isVisibility());
             }
         });
@@ -67,7 +71,7 @@ public class Fragment_Assignments extends Fragment {
         ArrayList<Assignment> assignments = new ArrayList<>();
 
         assignments.add(new Assignment()
-                .setDescription("בחירת תאריך משמרת")
+                .setDescription("בלהבלה")
         );
 
         assignments.add(new Assignment()
