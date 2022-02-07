@@ -10,6 +10,8 @@ import android.view.animation.LinearInterpolator;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.MayaGembom.shiftchecklist.More.Constants;
 import com.MayaGembom.shiftchecklist.Objects.MyFirebase;
 
 import com.MayaGembom.shiftchecklist.Objects.User;
@@ -96,7 +98,7 @@ public class Activity_Splash extends AppCompatActivity {
     private void readWorkerIdFromDB() {
         FirebaseUser firebaseUser = MyFirebase.getInstance().getUser();
         String userId = firebaseUser.getUid();
-        DatabaseReference myRef = MyFirebase.getInstance().getFdb().getReference("Users").child(userId).child("workerID");
+        DatabaseReference myRef = MyFirebase.getInstance().getFdb().getReference(Constants.USERS_PATH).child(userId).child(Constants.WORKER_ID_PATH);
         myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {

@@ -80,42 +80,7 @@ public class Fragment_EmployeeAssignments extends Fragment {
         assignments.add(new Assignment()
                 .setDescription("הדלקת מכונת קפה + סאקה חם")
         );
-        assignments.add(new Assignment()
-                .setDescription("סידור עמדת מלצרים")
-        );
-        assignments.add(new Assignment()
-                .setDescription("סידור עמדת פינויים")
-        );
-        assignments.add(new Assignment()
-                .setDescription("סידור ציוד לוגיסטי")
-        );
-        assignments.add(new Assignment()
-                .setDescription("סידור עמדת קוקטיילים")
-        );
-        assignments.add(new Assignment()
-                .setDescription("ניקוי מסך מחשב")
-        );
-        assignments.add(new Assignment()
-                .setDescription("השלמת סכו\"ם + קנקני סויה + ג'ינג'ר וווסאבי")
-        );
-        assignments.add(new Assignment()
-                .setDescription("סידור עמדת פינויים")
-        );
-        assignments.add(new Assignment()
-                .setDescription("סידור עמדת פינויים")
-        );
-        assignments.add(new Assignment()
-                .setDescription("סידור עמדת פינויים")
-        );
-        assignments.add(new Assignment()
-                .setDescription("סידור עמדת פינויים")
-        );
-        assignments.add(new Assignment()
-                .setDescription("סידור עמדת פינויים")
-        );
-        assignments.add(new Assignment()
-                .setDescription("סידור עמדת פינויים")
-        );
+
         return assignments;
     }
 

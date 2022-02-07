@@ -149,7 +149,7 @@ public class Activity_Register extends AppCompatActivity {
     }
 
     private void registerNow(final String userFirstName,final String userLastName, String userId, String userPhone){
-        DatabaseReference myRef = MyFirebase.getInstance().getFdb().getReference("Users").child(userId);
+        DatabaseReference myRef = MyFirebase.getInstance().getFdb().getReference(Constants.USERS_PATH).child(userId);
         myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {

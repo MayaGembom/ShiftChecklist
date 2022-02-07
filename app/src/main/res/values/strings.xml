@@ -3,7 +3,9 @@
     <string name="PHONE_NUMBER">כניסה באמצעות מספר טלפון</string>
     <string name="ASSIGNMENTS_FORM">משימות משמרת</string>
     <string name="HOME">בית</string>
-    <string name="ASSIGNMENTS">משימות</string>
+    <string name="ASSIGNMENTS">משימות אישיות</string>
+    <string name="ASSIGNMENTS_S">משימות אחמ\"ש</string>
+
     <string name="MANAGE_E_ASSIGNMENTS">ניהול משימות עובדים</string>
     <string name="MANAGE_S_ASSIGNMENTS">ניהול משימות אחמ"\"שים</string>
 

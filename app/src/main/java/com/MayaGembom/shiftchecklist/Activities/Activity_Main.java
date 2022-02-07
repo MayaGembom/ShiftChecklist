@@ -18,6 +18,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.MayaGembom.shiftchecklist.Fragments.Fragment_EmployeeAssignments;
+import com.MayaGembom.shiftchecklist.Fragments.Fragment_ShiftManagerAssignments;
 import com.MayaGembom.shiftchecklist.More.Constants;
 import com.MayaGembom.shiftchecklist.Objects.Employee;
 import com.MayaGembom.shiftchecklist.Objects.MyFirebase;
@@ -41,6 +42,7 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
     private NavigationView main_NAV_navigation;
     private ImageView header_IMG_profile;
     private TextView header_LBL_name;
+    private TextView header_LBL_role;
     private FrameLayout main_FRL_container;
     private String currentWorkerID = "3";
     private Employee employee;
@@ -71,6 +73,7 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
         View header = main_NAV_navigation.getHeaderView(0);
         header_IMG_profile = header.findViewById(R.id.header_IMG_profile);
         header_LBL_name = header.findViewById(R.id.header_LBL_name);
+        header_LBL_role= header.findViewById(R.id.header_LBL_role);
     }
 
     private void toolbarView() {
@@ -100,9 +103,17 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
             case R.id.menu_ITM_profile:
                 Intent newIntent = new Intent(this, Activity_Register.class);
                 startActivity(newIntent);
-            case R.id.menu_ITM_assign:
+            case R.id.menu_ITM_employee_assign:
                 getSupportFragmentManager().beginTransaction().replace(main_FRL_container.getId(), new Fragment_EmployeeAssignments()).commit();
                 main_TLB_toolbar.setTitle("טופס משימות");
+                break;
+            case R.id.menu_ITM_manage_shiftmanager_assign:
+                getSupportFragmentManager().beginTransaction().replace(main_FRL_container.getId(), new Fragment_ShiftManagerAssignments()).commit();
+                main_TLB_toolbar.setTitle("טופס משימות אחמ\"ש");
+                break;
+            case R.id.menu_ITM_manage_employee_assign:
+                getSupportFragmentManager().beginTransaction().replace(main_FRL_container.getId(), new Fragment_EmployeeAssignments()).commit();
+                main_TLB_toolbar.setTitle("ניהול טופס משימות עובדים");
                 break;
             case R.id.menu_ITM_logout:
                 signOut();
@@ -134,6 +145,7 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
                     case Constants.Employee_ID:
                         Log.d("ptttttttt", "onComplete employee: " + currentWorkerID);
                         employee = dataSnapshot.getValue(Employee.class); //load user from DB
+                        header_LBL_role.setText("תפקיד: עובד");
                         header_LBL_name.setText(employee.getUsername() + " " + employee.getUserLastName());
                         if (!employee.getImageURL().equals("default")) {
                             Glide.with(Activity_Main.this).load(employee.getImageURL()).into(header_IMG_profile);
@@ -141,6 +153,7 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
                         break;
                     case Constants.ShiftManager_ID:
                         shiftManager = dataSnapshot.getValue(ShiftManager.class); //load user from DB
+                        header_LBL_role.setText("תפקיד: אחמ\"ש");
                         header_LBL_name.setText(shiftManager.getUsername() + " " + shiftManager.getUserLastName());
                         if (!shiftManager.getImageURL().equals("default")) {
                             Glide.with(Activity_Main.this).load(shiftManager.getImageURL()).into(header_IMG_profile);
@@ -148,6 +161,7 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
                         break;
                     case Constants.Owner_ID:
                         owner = dataSnapshot.getValue(Owner.class); //load user from DB
+                        header_LBL_role.setText("תפקיד: בעלים");
                         header_LBL_name.setText(owner.getUsername() + " " + owner.getUserLastName());
                         if (!owner.getImageURL().equals("default")) {
                             Glide.with(Activity_Main.this).load(owner.getImageURL()).into(header_IMG_profile);
@@ -169,18 +183,20 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
         switch (currentWorkerID) {
                     case Constants.Employee_ID:
                         menu.findItem(R.id.menu_ITM_profile).setVisible(true);
-                        menu.findItem(R.id.menu_ITM_assign).setVisible(true);
+                        menu.findItem(R.id.menu_ITM_employee_assign).setVisible(true);
                         menu.findItem(R.id.menu_ITM_manage_employee_assign).setVisible(false);
                         menu.findItem(R.id.menu_ITM_manage_shiftmanager_assign).setVisible(false);
                         break;
                     case Constants.ShiftManager_ID:
-                        menu.findItem(R.id.menu_ITM_assign).setVisible(true);
+                        menu.findItem(R.id.menu_ITM_employee_assign).setVisible(false);
+                        menu.findItem(R.id.menu_ITM_manage_shiftmanager_assign).setVisible(true);
                         menu.findItem(R.id.menu_ITM_profile).setVisible(true);
                         menu.findItem(R.id.menu_ITM_manage_employee_assign).setVisible(true);
                         menu.findItem(R.id.menu_ITM_manage_shiftmanager_assign).setVisible(false);
                         break;
                     case Constants.Owner_ID:
-                        menu.findItem(R.id.menu_ITM_assign).setVisible(true);
+                        menu.findItem(R.id.menu_ITM_employee_assign).setVisible(false);
+                        menu.findItem(R.id.menu_ITM_manage_shiftmanager_assign).setVisible(false);
                         menu.findItem(R.id.menu_ITM_profile).setVisible(true);
                         menu.findItem(R.id.menu_ITM_manage_employee_assign).setVisible(true);
                         menu.findItem(R.id.menu_ITM_manage_shiftmanager_assign).setVisible(true);

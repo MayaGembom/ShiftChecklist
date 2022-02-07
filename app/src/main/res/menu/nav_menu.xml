@@ -8,8 +8,12 @@
                 android:title="@string/USER_PROFILE"
                 android:icon="@drawable/settings_icon" />
             <item
-                android:id="@+id/menu_ITM_assign"
+                android:id="@+id/menu_ITM_employee_assign"
                 android:title="@string/ASSIGNMENTS"
+                android:icon="@drawable/assignment_icon" />
+            <item
+                android:id="@+id/menu_ITM_shiftmanager_assign"
+                android:title="@string/ASSIGNMENTS_S"
                 android:icon="@drawable/assignment_icon" />
             <item
                 android:id="@+id/menu_ITM_manage_employee_assign"
