@@ -8,10 +8,7 @@ public class Employee extends User implements Interface_Employee {
 
     }
 
-    public Employee(String id, String userLastName, String username, String userPhoneNumber, String imageURL) {
-        super(id, userLastName, username, userPhoneNumber, imageURL);
+    public Employee(String uid, String userName, String userLastName, String userPhoneNumber, String imageURL, String workerID) {
+        super(uid, userName, userLastName, userPhoneNumber, imageURL, workerID);
     }
-
-
-
 }

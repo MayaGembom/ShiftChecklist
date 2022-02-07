@@ -7,7 +7,7 @@ public class ShiftManager extends User implements Interface_ShiftManager {
     public ShiftManager() {
     }
 
-    public ShiftManager(String id, String userLastName, String username, String userPhoneNumber, String imageURL) {
-        super(id, userLastName, username, userPhoneNumber, imageURL);
+    public ShiftManager(String uid, String userName, String userLastName, String userPhoneNumber, String imageURL, String workerID) {
+        super(uid, userName, userLastName, userPhoneNumber, imageURL, workerID);
     }
 }

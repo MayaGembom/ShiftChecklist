@@ -4,11 +4,13 @@ package com.MayaGembom.shiftchecklist.Activities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -47,12 +49,13 @@ public class Activity_Register extends AppCompatActivity {
     private MaterialButtonToggleGroup toggle_BTN_user;
     private MaterialButton register_BTN_employee;
     private ProgressDialog progressDialog;
+    private EditText token_EDT_password;
     private Uri imageUri;
     private String myDownloadUrl;
     private Employee employee;
     private ShiftManager shiftManager;
     private Owner owner;
-    private static int currentWorkerID;
+    private String currentWorkerID;
 
 
     @Override
@@ -79,7 +82,6 @@ public class Activity_Register extends AppCompatActivity {
                 @Override
                 public void onSuccess(Uri uri) {
                     myDownloadUrl = uri.toString();
-                    //Log.d("pttttt", "onSuccess: " +myDownloadUrl);
                 }
             });
         }
@@ -92,20 +94,24 @@ public class Activity_Register extends AppCompatActivity {
                 takePicture();
             }
         });
-
-        register_BTN_employee.setChecked(true);
+        toggle_BTN_user.setSingleSelection(true);
         toggle_BTN_user.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
                 if (isChecked) {
                     if (checkedId == R.id.register_BTN_employee) {
-                        currentWorkerID = 3;
+                        currentWorkerID = "3";
+                        token_EDT_password.setVisibility(View.INVISIBLE);
                     }
                     if (checkedId == R.id.register_BTN_shiftManager) {
-                        currentWorkerID = 2;
+                        token_EDT_password.setHint("קוד אימות אחמש");
+                        token_EDT_password.setVisibility(View.VISIBLE);
+                        currentWorkerID = "2";
                     }
                     if (checkedId == R.id.register_BTN_owner) {
-                        currentWorkerID = 1;
+                        token_EDT_password.setHint("קוד אימות בעלים");
+                        token_EDT_password.setVisibility(View.VISIBLE);
+                        currentWorkerID = "1";
                     }
                 }
             }
@@ -121,11 +127,11 @@ public class Activity_Register extends AppCompatActivity {
                 String userID = MyFirebase.getInstance().getUser().getUid();
                 String userPhone = MyFirebase.getInstance().getUser().getPhoneNumber();
 
-                if (TextUtils.isEmpty(userName_text) ||TextUtils.isEmpty(userLastName_text) || imageUri == null){
+                if (TextUtils.isEmpty(userName_text) ||TextUtils.isEmpty(userLastName_text)){
                     Toast.makeText(Activity_Register.this, "נא מלא/י תמונה ושם פרטי+משפחה", Toast.LENGTH_SHORT).show();
                 }else
-                    //progressDialog.setMessage("מאחסן את המידע..");
-                    //progressDialog.show();
+                    progressDialog.setMessage("מאחסן את המידע..");
+                    progressDialog.show();
                     registerNow(userName_text, userLastName_text,userID, userPhone);
             }
         });
@@ -148,28 +154,27 @@ public class Activity_Register extends AppCompatActivity {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if(task.isSuccessful()){
-                    if(currentWorkerID == 3)
+                    if(currentWorkerID == "3")
                     {
-                        employee = new Employee(userId, userLastName, userFirstName,userPhone, myDownloadUrl);
-                        employee.setWorkerID(currentWorkerID);
+                        employee = new Employee(userId, userFirstName, userLastName,userPhone,myDownloadUrl,currentWorkerID);
                         myRef.setValue(employee);
                     }
-                    else if(currentWorkerID == 2){
-                        shiftManager = new ShiftManager(userId, userLastName, userFirstName,userPhone, myDownloadUrl);
+                    else if(currentWorkerID == "2"){
+                        shiftManager = new ShiftManager(userId, userFirstName, userLastName,userPhone,myDownloadUrl,currentWorkerID);
                         shiftManager.setWorkerID(currentWorkerID);
                         myRef.setValue(shiftManager);
                     }
-                    else if(currentWorkerID == 1){
-                        owner = new Owner(userId, userLastName, userFirstName,userPhone, myDownloadUrl);
+                    else if(currentWorkerID == "1"){
+                        owner = new Owner(userId, userFirstName, userLastName,userPhone,myDownloadUrl,currentWorkerID);
                         owner.setWorkerID(currentWorkerID);
                         myRef.setValue(owner);
                     }
-                    Intent myIntent = new Intent(Activity_Register.this, Activity_Main.class);
-                    myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                    startActivity(myIntent);
-                    finish();
-
                 }
+                Intent intent = new Intent(Activity_Register.this, Activity_Main.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.putExtra("key",currentWorkerID);
+                startActivity(intent);
+                finish();
             }
     });
     }
@@ -181,10 +186,6 @@ public class Activity_Register extends AppCompatActivity {
         register_BTN_complete = findViewById(R.id.register_BTN_register);
         toggle_BTN_user = findViewById(R.id.toggle_BTN_user);
         register_BTN_employee = findViewById(R.id.register_BTN_employee);
-
-    }
-
-    public static int getCurrentWorkerID() {
-        return currentWorkerID;
+        token_EDT_password = findViewById(R.id.token_EDT_password);
     }
 }

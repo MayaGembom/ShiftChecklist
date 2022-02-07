@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import com.MayaGembom.shiftchecklist.Objects.MyFirebase;
 
+import com.MayaGembom.shiftchecklist.Objects.User;
 import com.MayaGembom.shiftchecklist.R;
 import com.airbnb.lottie.LottieAnimationView;
 
@@ -28,17 +29,16 @@ public class Activity_Splash extends AppCompatActivity {
 
     public final int ANIMATION_DURATION = 3200;
     private LottieAnimationView splash_LAV_animation;
-    private static String workerID;
+    private String workerID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
-        findViews();
-        readWorkerIdFromDB();
-        startAnimation(splash_LAV_animation);
 
+        findViews();
+        startAnimation(splash_LAV_animation);
     }
 
     private void startAnimation(View view) {
@@ -57,12 +57,11 @@ public class Activity_Splash extends AppCompatActivity {
                 .setListener(new Animator.AnimatorListener() {
                     @Override
                     public void onAnimationStart(Animator animation) {
-
+                        animationDone();
                     }
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
-                        animationDone();
                     }
 
                     @Override
@@ -80,21 +79,15 @@ public class Activity_Splash extends AppCompatActivity {
 
     private void animationDone() {
         FirebaseUser user = MyFirebase.getInstance().getUser();
-        if(user != null){
-            openHomeActivity();
-        }else
+        if(user != null) {
+            readWorkerIdFromDB();
+        }
+        else
             openLoginActivity();
     }
 
     private void openLoginActivity() {
         Intent intent = new Intent(this, Activity_Login.class);
-        intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-        startActivity(intent);
-        finish();
-    }
-
-    private void openHomeActivity() {
-        Intent intent = new Intent(this, Activity_Main.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
         startActivity(intent);
         finish();
@@ -109,6 +102,11 @@ public class Activity_Splash extends AppCompatActivity {
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if(task.isSuccessful()){
                     workerID = String.valueOf(task.getResult().getValue());
+                    Intent intent = new Intent(Activity_Splash.this, Activity_Main.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                    intent.putExtra("key",workerID);
+                    startActivity(intent);
+                    finish();
                 }
             }
         });
@@ -120,13 +118,5 @@ public class Activity_Splash extends AppCompatActivity {
 
     }
 
-    public static int getWorkerID() {
-        return Integer.parseInt(workerID);
-    }
-
-    public Activity_Splash setWorkerID(String workerID) {
-        this.workerID = workerID;
-        return this;
-    }
 
 }

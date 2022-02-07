@@ -160,66 +160,79 @@
 
                 <com.google.android.material.button.MaterialButtonToggleGroup
                     android:id="@+id/toggle_BTN_user"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
                     android:layout_marginTop="15dp">
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/register_BTN_employee"
                         style="?attr/materialButtonOutlinedStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="63dp"
-                        android:backgroundTint="#282D35"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:insetLeft="5dp"
+                        android:insetRight="5dp"
                         android:text="@string/Employee"
                         android:textColor="@color/white"
-                        app:strokeColor="@color/white" />
+                        />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/register_BTN_shiftManager"
                         style="?attr/materialButtonOutlinedStyle"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:backgroundTint="#282D35"
+                        android:layout_weight="3"
+                        android:insetLeft="5dp"
+                        android:insetRight="5dp"
                         android:text="@string/ShiftManager"
                         android:textColor="@color/white"
-                        app:strokeColor="@color/white" />
+                         />
 
                     <com.google.android.material.button.MaterialButton
                         android:id="@+id/register_BTN_owner"
                         style="?attr/materialButtonOutlinedStyle"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:backgroundTint="#282D35"
+                        android:layout_weight="3"
+                        android:insetLeft="5dp"
+                        android:insetRight="5dp"
                         android:text="@string/Owner"
-                        android:textColor="@color/white"
-                        app:strokeColor="@color/white" />
+                        android:textColor="@color/white"/>
                 </com.google.android.material.button.MaterialButtonToggleGroup>
 
-
-                <LinearLayout
-                    android:layout_width="match_parent"
+                <EditText
+                    android:id="@+id/token_EDT_password"
+                    android:layout_width="180dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="40dp"
-                    android:gravity="center"
-                    android:orientation="vertical">
+                    android:layout_gravity="center"
+                    android:inputType="numberPassword"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="3"
+                    android:backgroundTint="#FFFFFF"
+                    android:autofillHints="@string/TOKEN"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:visibility="invisible"
+                    android:textColorHint="@color/material_on_primary_emphasis_medium"
+                    android:textSize="20sp" />
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/register_BTN_register"
-                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                        android:layout_width="180dp"
-                        android:layout_height="60dp"
-                        android:layout_marginTop="12dp"
-                        android:layout_marginBottom="10dp"
-                        android:drawableRight="@drawable/edit"
-                        android:elegantTextHeight="true"
-                        android:gravity="center"
-                        android:paddingRight="15dp"
-                        android:text="@string/Save_Changes"
-                        android:textColor="@color/white"
-                        android:textSize="18dp"
-                        app:cornerRadius="50dp"
-                        app:strokeColor="@color/white" />
-                </LinearLayout>
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/register_BTN_register"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="180dp"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="10dp"
+                    android:drawableRight="@drawable/edit"
+                    android:elegantTextHeight="true"
+                    android:gravity="center"
+                    android:paddingRight="15dp"
+                    android:text="@string/Save_Changes"
+                    android:textColor="@color/white"
+                    android:textSize="18dp"
+                    app:cornerRadius="50dp"
+                    app:strokeColor="@color/white" />
 
             </LinearLayout>
 

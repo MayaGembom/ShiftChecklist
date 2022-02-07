@@ -4,6 +4,8 @@
     <string name="ASSIGNMENTS_FORM">משימות משמרת</string>
     <string name="HOME">בית</string>
     <string name="ASSIGNMENTS">משימות</string>
+    <string name="MANAGE_E_ASSIGNMENTS">ניהול משימות עובדים</string>
+    <string name="MANAGE_S_ASSIGNMENTS">ניהול משימות אחמ"\"שים</string>
 
     <string name="USER_PROFILE">פרופיל אישי</string>
     <string name="Log_Out">התנתקות</string>
@@ -19,6 +21,9 @@
     <string name="ShiftManager">אחמ"ש</string>
     <string name="Owner">בעלים</string>
 
+    <string name="motivation">""\"האדם היחיד שנועדתם להיות הוא האדם שאתם מחליטים להיות"\"</string>
+    <string name="author">ראלף וולדו אמרסון</string>
+    <string name="TOKEN">קוד אימות</string>
 
     <string name="openNavDrawer">Navigation Drawer Open</string>
     <string name="closeNavDrawer">Navigation Drawer Close</string>

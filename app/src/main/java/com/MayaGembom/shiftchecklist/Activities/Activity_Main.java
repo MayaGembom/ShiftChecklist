@@ -3,6 +3,7 @@ package com.MayaGembom.shiftchecklist.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -17,6 +18,7 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.MayaGembom.shiftchecklist.Fragments.Fragment_EmployeeAssignments;
+import com.MayaGembom.shiftchecklist.More.Constants;
 import com.MayaGembom.shiftchecklist.Objects.Employee;
 import com.MayaGembom.shiftchecklist.Objects.MyFirebase;
 import com.MayaGembom.shiftchecklist.Objects.Owner;
@@ -40,8 +42,7 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
     private ImageView header_IMG_profile;
     private TextView header_LBL_name;
     private FrameLayout main_FRL_container;
-
-
+    private String currentWorkerID = "3";
     private Employee employee;
     private ShiftManager shiftManager;
     private Owner owner;
@@ -51,10 +52,12 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Intent intent = getIntent();
+        currentWorkerID =intent.getExtras().getString("key");
+
         findViews();
         initListener();
         toolbarView();
-        Log.d("ptttttt", "onCreate: on");
 
 
     }
@@ -120,48 +123,39 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
     }
 
 
-
-    @Override
-    public void onBackPressed() {
-        if (main_DRL_drawer.isDrawerOpen(GravityCompat.START)) {
-            main_DRL_drawer.closeDrawer(GravityCompat.START);
-        } else
-            super.onBackPressed();
-    }
-
-
-
-
     private void initListener(){
         FirebaseUser firebaseUser = MyFirebase.getInstance().getUser();
         DatabaseReference myRef = MyFirebase.getInstance().getFdb().getReference("Users").child(firebaseUser.getUid());
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                int currentWorkerID = Activity_Splash.getWorkerID();
-                if(currentWorkerID == 3)
-                {
-                    employee = dataSnapshot.getValue(Employee.class); //load user from DB
-                    header_LBL_name.setText(employee.getUsername() + " " + employee.getUserLastName());
-                    if (!employee.getImageURL().equals("default")) {
-                        Glide.with(Activity_Main.this).load(employee.getImageURL()).into(header_IMG_profile);
-                    }
+                Log.d("pttttt", "onDataChange: "+ currentWorkerID);
+                switch (currentWorkerID){
+                    case Constants.Employee_ID:
+                        Log.d("ptttttttt", "onComplete employee: " + currentWorkerID);
+                        employee = dataSnapshot.getValue(Employee.class); //load user from DB
+                        header_LBL_name.setText(employee.getUsername() + " " + employee.getUserLastName());
+                        if (!employee.getImageURL().equals("default")) {
+                            Glide.with(Activity_Main.this).load(employee.getImageURL()).into(header_IMG_profile);
+                        }
+                        break;
+                    case Constants.ShiftManager_ID:
+                        shiftManager = dataSnapshot.getValue(ShiftManager.class); //load user from DB
+                        header_LBL_name.setText(shiftManager.getUsername() + " " + shiftManager.getUserLastName());
+                        if (!shiftManager.getImageURL().equals("default")) {
+                            Glide.with(Activity_Main.this).load(shiftManager.getImageURL()).into(header_IMG_profile);
+                        }
+                        break;
+                    case Constants.Owner_ID:
+                        owner = dataSnapshot.getValue(Owner.class); //load user from DB
+                        header_LBL_name.setText(owner.getUsername() + " " + owner.getUserLastName());
+                        if (!owner.getImageURL().equals("default")) {
+                            Glide.with(Activity_Main.this).load(owner.getImageURL()).into(header_IMG_profile);
+                        }
+                        break;
                 }
+                showItems();
 
-                if(currentWorkerID == 2){
-                    shiftManager = dataSnapshot.getValue(ShiftManager.class); //load user from DB
-                    header_LBL_name.setText(shiftManager.getUsername() + " " + shiftManager.getUserLastName());
-                    if (!shiftManager.getImageURL().equals("default")) {
-                        Glide.with(Activity_Main.this).load(shiftManager.getImageURL()).into(header_IMG_profile);
-                    }
-                }
-                if(currentWorkerID == 1){
-                    owner = dataSnapshot.getValue(Owner.class); //load user from DB
-                    header_LBL_name.setText(owner.getUsername() + " " + owner.getUserLastName());
-                    if (!owner.getImageURL().equals("default")) {
-                        Glide.with(Activity_Main.this).load(owner.getImageURL()).into(header_IMG_profile);
-                    }
-                }
             }
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
@@ -169,31 +163,30 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
             }
         });
     }
+
+    private void showItems() {
+        Menu menu = main_NAV_navigation.getMenu();
+        switch (currentWorkerID) {
+                    case Constants.Employee_ID:
+                        menu.findItem(R.id.menu_ITM_profile).setVisible(true);
+                        menu.findItem(R.id.menu_ITM_assign).setVisible(true);
+                        menu.findItem(R.id.menu_ITM_manage_employee_assign).setVisible(false);
+                        menu.findItem(R.id.menu_ITM_manage_shiftmanager_assign).setVisible(false);
+                        break;
+                    case Constants.ShiftManager_ID:
+                        menu.findItem(R.id.menu_ITM_assign).setVisible(true);
+                        menu.findItem(R.id.menu_ITM_profile).setVisible(true);
+                        menu.findItem(R.id.menu_ITM_manage_employee_assign).setVisible(true);
+                        menu.findItem(R.id.menu_ITM_manage_shiftmanager_assign).setVisible(false);
+                        break;
+                    case Constants.Owner_ID:
+                        menu.findItem(R.id.menu_ITM_assign).setVisible(true);
+                        menu.findItem(R.id.menu_ITM_profile).setVisible(true);
+                        menu.findItem(R.id.menu_ITM_manage_employee_assign).setVisible(true);
+                        menu.findItem(R.id.menu_ITM_manage_shiftmanager_assign).setVisible(true);
+                       break;
+        }
+    }
 }
 
-    //private void showItems() {
-   //    Menu menu = main_NAV_navigation.getMenu();
-   //    if (currentWorker != null) {
-   //        hideItems();
-   //        if (currentWorker.getIsAccepted()) {
-   //            switch (currentWorker.getType()) {
-   //                case Constants.MANAGER_ID:
-   //                    menu.findItem(R.id.menu_ITM_stats).setVisible(true);
-   //                    menu.findItem(R.id.menu_ITM_assign).setVisible(true);
-   //                    menu.findItem(R.id.menu_ITM_profile).setVisible(true);
-   //                    break;
-   //                case Constants.WORKER_ID:
-   //                    menu.findItem(R.id.menu_ITM_assign).setVisible(true);
-   //                    menu.findItem(R.id.menu_ITM_profile).setVisible(true);
-   //                    break;
-   //                case Constants.HR_ID:
-   //                    menu.findItem(R.id.menu_ITM_assign).setVisible(true);
-   //                    menu.findItem(R.id.menu_ITM_requests).setVisible(true);
-   //                    menu.findItem(R.id.menu_ITM_profile).setVisible(true);
-   //                    break;
-   //            }
-   //        } else {
-   //            getSupportFragmentManager().beginTransaction().replace(main_FRL_container.getId(), new Fragment_Unauthorized()).commitAllowingStateLoss();
-   //        }
-   //    }
-   //}
+

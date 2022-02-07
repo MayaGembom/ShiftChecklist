@@ -7,7 +7,7 @@ public class Owner extends User implements Interface_Owner {
     public Owner() {
     }
 
-    public Owner(String id, String userLastName, String username, String userPhoneNumber, String imageURL) {
-        super(id, userLastName, username, userPhoneNumber, imageURL);
+    public Owner(String uid, String userName, String userLastName, String userPhoneNumber, String imageURL, String workerID) {
+        super(uid, userName, userLastName, userPhoneNumber, imageURL, workerID);
     }
 }
