@@ -2,6 +2,7 @@ package com.MayaGembom.shiftchecklist.Fragments;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +14,12 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.MayaGembom.shiftchecklist.Activities.Activity_Main;
+import com.MayaGembom.shiftchecklist.More.Constants;
 import com.MayaGembom.shiftchecklist.Objects.Assignment;
 import com.MayaGembom.shiftchecklist.R;
 import com.MayaGembom.shiftchecklist.Recycler.AdapterAssignment;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -24,6 +28,8 @@ public class Fragment_EmployeeAssignments extends Fragment {
     private RecyclerView main_LST_assignments;
     private View view;
     private Context context;
+    private FloatingActionButton add_FAB_assignments;
+    private String currentWorkerID;
 
     @Nullable
     @Override
@@ -31,15 +37,22 @@ public class Fragment_EmployeeAssignments extends Fragment {
         view = inflater.inflate(R.layout.fragment_assignments, container, false);
         context = view.getContext();
         findViews();
-
         recyclerView();
+
+        currentWorkerID = Activity_Main.getCurrentWorkerID();
+
+        if(currentWorkerID.equals(Constants.ShiftManager_ID))
+            add_FAB_assignments.setVisibility(View.VISIBLE);
+
         return view;
     }
 
 
+
+
     private void findViews() {
         main_LST_assignments = view.findViewById(R.id.main_LST_assignments);
-
+        add_FAB_assignments = view.findViewById(R.id.add_FAB_assignments);
     }
 
     private void recyclerView() {

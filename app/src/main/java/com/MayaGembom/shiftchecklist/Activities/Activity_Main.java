@@ -44,7 +44,7 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
     private TextView header_LBL_name;
     private TextView header_LBL_role;
     private FrameLayout main_FRL_container;
-    private String currentWorkerID = "3";
+    private static String currentWorkerID;
     private Employee employee;
     private ShiftManager shiftManager;
     private Owner owner;
@@ -140,10 +140,8 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                Log.d("pttttt", "onDataChange: "+ currentWorkerID);
                 switch (currentWorkerID){
                     case Constants.Employee_ID:
-                        Log.d("ptttttttt", "onComplete employee: " + currentWorkerID);
                         employee = dataSnapshot.getValue(Employee.class); //load user from DB
                         header_LBL_role.setText("תפקיד: עובד");
                         header_LBL_name.setText(employee.getUsername() + " " + employee.getUserLastName());
@@ -196,12 +194,21 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
                         break;
                     case Constants.Owner_ID:
                         menu.findItem(R.id.menu_ITM_employee_assign).setVisible(false);
-                        menu.findItem(R.id.menu_ITM_manage_shiftmanager_assign).setVisible(false);
+                        menu.findItem(R.id.menu_ITM_shiftmanager_assign).setVisible(false);
                         menu.findItem(R.id.menu_ITM_profile).setVisible(true);
                         menu.findItem(R.id.menu_ITM_manage_employee_assign).setVisible(true);
                         menu.findItem(R.id.menu_ITM_manage_shiftmanager_assign).setVisible(true);
                        break;
         }
+    }
+
+    public static String getCurrentWorkerID() {
+        return currentWorkerID;
+    }
+
+    public Activity_Main setCurrentWorkerID(String currentWorkerID) {
+        this.currentWorkerID = currentWorkerID;
+        return this;
     }
 }
 

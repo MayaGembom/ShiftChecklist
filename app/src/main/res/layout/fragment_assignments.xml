@@ -11,8 +11,28 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/main_LST_assignments"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-         />
+        android:layout_height="match_parent" />
+
+    <FrameLayout
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/add_FAB_assignments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/ic_baseline_add_24"
+            app:tint="@color/black"
+            app:fabCustomSize="80dp"
+            app:maxImageSize="50dp"
+            />
+    </FrameLayout>
 
 
 </RelativeLayout>
