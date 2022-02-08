@@ -47,6 +47,8 @@ public class Activity_Register extends AppCompatActivity {
     private TextInputLayout register_EDT_first_name,register_EDT_last_name;
     private MaterialButton register_BTN_complete;
     private MaterialButtonToggleGroup toggle_BTN_user;
+    private MaterialButtonToggleGroup toggle_BTN_department;
+
     private MaterialButton register_BTN_employee;
     private ProgressDialog progressDialog;
     private EditText token_EDT_password;
@@ -56,6 +58,7 @@ public class Activity_Register extends AppCompatActivity {
     private ShiftManager shiftManager;
     private Owner owner;
     private String currentWorkerID;
+    private String whichDepartment;
 
 
     @Override
@@ -104,7 +107,7 @@ public class Activity_Register extends AppCompatActivity {
                         token_EDT_password.setVisibility(View.INVISIBLE);
                     }
                     if (checkedId == R.id.register_BTN_shiftManager) {
-                        token_EDT_password.setHint("קוד אימות אחמש");
+                        token_EDT_password.setHint("קוד אימות אחמ\"ש");
                         token_EDT_password.setVisibility(View.VISIBLE);
                         currentWorkerID = "2";
                     }
@@ -116,7 +119,23 @@ public class Activity_Register extends AppCompatActivity {
                 }
             }
         });
+        toggle_BTN_department.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
+            @Override
+            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
+                if (isChecked) {
+                    if (checkedId == R.id.register_BTN_restaurant) {
+                        whichDepartment = Constants.RESTAURANT_DEPARTMENT;
+                    }
+                    if (checkedId == R.id.register_BTN_delivery) {
+                        whichDepartment = Constants.DELIVERY_DEPARTMENT;
 
+                    }
+                    if (checkedId == R.id.register_BTN_bar) {
+                        whichDepartment = Constants.BAR_DEPARTMENT;
+                    }
+                }
+            }
+        });
 
         // Adding Event Listener to Button Register
         register_BTN_complete.setOnClickListener(new View.OnClickListener() {
@@ -125,14 +144,13 @@ public class Activity_Register extends AppCompatActivity {
                 String userName_text = register_EDT_first_name.getEditText().getText().toString();
                 String userLastName_text = register_EDT_last_name.getEditText().getText().toString();
                 String userID = MyFirebase.getInstance().getUser().getUid();
-                String userPhone = MyFirebase.getInstance().getUser().getPhoneNumber();
 
                 if (TextUtils.isEmpty(userName_text) ||TextUtils.isEmpty(userLastName_text)){
                     Toast.makeText(Activity_Register.this, "נא מלא/י תמונה ושם פרטי+משפחה", Toast.LENGTH_SHORT).show();
                 }else
                     progressDialog.setMessage("מאחסן את המידע..");
                     progressDialog.show();
-                    registerNow(userName_text, userLastName_text,userID, userPhone);
+                    registerNow(userName_text, userLastName_text,userID);
             }
         });
 
@@ -148,24 +166,24 @@ public class Activity_Register extends AppCompatActivity {
                 .start();
     }
 
-    private void registerNow(final String userFirstName,final String userLastName, String userId, String userPhone){
+    private void registerNow(final String userFirstName,final String userLastName, String userId){
         DatabaseReference myRef = MyFirebase.getInstance().getFdb().getReference(Constants.USERS_PATH).child(userId);
         myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if(task.isSuccessful()){
-                    if(currentWorkerID == "3")
+                    if(currentWorkerID.equals(Constants.Employee_ID))
                     {
-                        employee = new Employee(userId, userFirstName, userLastName,userPhone,myDownloadUrl,currentWorkerID);
+                        employee = new Employee(myDownloadUrl, userFirstName, userLastName, currentWorkerID,whichDepartment);
                         myRef.setValue(employee);
                     }
-                    else if(currentWorkerID == "2"){
-                        shiftManager = new ShiftManager(userId, userFirstName, userLastName,userPhone,myDownloadUrl,currentWorkerID);
+                    else if(currentWorkerID.equals(Constants.ShiftManager_ID)){
+                        shiftManager = new ShiftManager(myDownloadUrl, userFirstName, userLastName, currentWorkerID,whichDepartment);
                         shiftManager.setWorkerID(currentWorkerID);
                         myRef.setValue(shiftManager);
                     }
-                    else if(currentWorkerID == "1"){
-                        owner = new Owner(userId, userFirstName, userLastName,userPhone,myDownloadUrl,currentWorkerID);
+                    else if(currentWorkerID.equals(Constants.Owner_ID)){
+                        owner = new Owner(myDownloadUrl, userFirstName, userLastName, currentWorkerID);
                         owner.setWorkerID(currentWorkerID);
                         myRef.setValue(owner);
                     }
@@ -187,5 +205,7 @@ public class Activity_Register extends AppCompatActivity {
         toggle_BTN_user = findViewById(R.id.toggle_BTN_user);
         register_BTN_employee = findViewById(R.id.register_BTN_employee);
         token_EDT_password = findViewById(R.id.token_EDT_password);
+
+        toggle_BTN_department = findViewById(R.id.toggle_BTN_department);
     }
 }

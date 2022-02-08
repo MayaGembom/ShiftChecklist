@@ -144,7 +144,7 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
                     case Constants.Employee_ID:
                         employee = dataSnapshot.getValue(Employee.class); //load user from DB
                         header_LBL_role.setText("תפקיד: עובד");
-                        header_LBL_name.setText(employee.getUsername() + " " + employee.getUserLastName());
+                        header_LBL_name.setText(employee.getUserFirstName() + " " + employee.getUserLastName());
                         if (!employee.getImageURL().equals("default")) {
                             Glide.with(Activity_Main.this).load(employee.getImageURL()).into(header_IMG_profile);
                         }
@@ -152,7 +152,7 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
                     case Constants.ShiftManager_ID:
                         shiftManager = dataSnapshot.getValue(ShiftManager.class); //load user from DB
                         header_LBL_role.setText("תפקיד: אחמ\"ש");
-                        header_LBL_name.setText(shiftManager.getUsername() + " " + shiftManager.getUserLastName());
+                        header_LBL_name.setText(shiftManager.getUserFirstName() + " " + shiftManager.getUserLastName());
                         if (!shiftManager.getImageURL().equals("default")) {
                             Glide.with(Activity_Main.this).load(shiftManager.getImageURL()).into(header_IMG_profile);
                         }
@@ -160,7 +160,7 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
                     case Constants.Owner_ID:
                         owner = dataSnapshot.getValue(Owner.class); //load user from DB
                         header_LBL_role.setText("תפקיד: בעלים");
-                        header_LBL_name.setText(owner.getUsername() + " " + owner.getUserLastName());
+                        header_LBL_name.setText(owner.getUserFirstName() + " " + owner.getUserLastName());
                         if (!owner.getImageURL().equals("default")) {
                             Glide.with(Activity_Main.this).load(owner.getImageURL()).into(header_IMG_profile);
                         }
@@ -181,14 +181,15 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
         switch (currentWorkerID) {
                     case Constants.Employee_ID:
                         menu.findItem(R.id.menu_ITM_profile).setVisible(true);
+                        menu.findItem(R.id.menu_ITM_shiftmanager_assign).setVisible(false);
                         menu.findItem(R.id.menu_ITM_employee_assign).setVisible(true);
                         menu.findItem(R.id.menu_ITM_manage_employee_assign).setVisible(false);
                         menu.findItem(R.id.menu_ITM_manage_shiftmanager_assign).setVisible(false);
                         break;
                     case Constants.ShiftManager_ID:
-                        menu.findItem(R.id.menu_ITM_employee_assign).setVisible(false);
-                        menu.findItem(R.id.menu_ITM_manage_shiftmanager_assign).setVisible(true);
                         menu.findItem(R.id.menu_ITM_profile).setVisible(true);
+                        menu.findItem(R.id.menu_ITM_employee_assign).setVisible(false);
+                        menu.findItem(R.id.menu_ITM_shiftmanager_assign).setVisible(true);
                         menu.findItem(R.id.menu_ITM_manage_employee_assign).setVisible(true);
                         menu.findItem(R.id.menu_ITM_manage_shiftmanager_assign).setVisible(false);
                         break;
@@ -206,10 +207,7 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
         return currentWorkerID;
     }
 
-    public Activity_Main setCurrentWorkerID(String currentWorkerID) {
-        this.currentWorkerID = currentWorkerID;
-        return this;
-    }
+
 }
 
 

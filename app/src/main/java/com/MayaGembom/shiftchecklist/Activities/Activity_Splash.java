@@ -29,7 +29,7 @@ import com.google.firebase.database.DatabaseReference;
 
 public class Activity_Splash extends AppCompatActivity {
 
-    public final int ANIMATION_DURATION = 3200;
+    public final int ANIMATION_DURATION = 4000;
     private LottieAnimationView splash_LAV_animation;
     private String workerID;
 
@@ -64,6 +64,7 @@ public class Activity_Splash extends AppCompatActivity {
 
                     @Override
                     public void onAnimationEnd(Animator animation) {
+
                     }
 
                     @Override

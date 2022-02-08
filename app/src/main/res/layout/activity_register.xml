@@ -200,6 +200,47 @@
                         android:textColor="@color/white"/>
                 </com.google.android.material.button.MaterialButtonToggleGroup>
 
+                <com.google.android.material.button.MaterialButtonToggleGroup
+                    android:id="@+id/toggle_BTN_department"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:layout_marginTop="15dp">
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/register_BTN_restaurant"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:insetLeft="5dp"
+                        android:insetRight="5dp"
+                        android:text="@string/RESTAURANT"
+                        android:textColor="@color/white"
+                        />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/register_BTN_delivery"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:insetLeft="5dp"
+                        android:insetRight="5dp"
+                        android:text="@string/DELIVERY"
+                        android:textColor="@color/white"
+                        />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/register_BTN_bar"
+                        style="?attr/materialButtonOutlinedStyle"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="3"
+                        android:insetLeft="5dp"
+                        android:insetRight="5dp"
+                        android:text="@string/BAR"
+                        android:textColor="@color/white"/>
+                </com.google.android.material.button.MaterialButtonToggleGroup>
                 <EditText
                     android:id="@+id/token_EDT_password"
                     android:layout_width="180dp"

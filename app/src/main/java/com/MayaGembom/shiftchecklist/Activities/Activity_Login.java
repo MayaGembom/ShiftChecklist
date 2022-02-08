@@ -75,7 +75,7 @@ public class Activity_Login extends AppCompatActivity {
                 @Override
                 public void onSuccess(DataSnapshot dataSnapshot) {
                     if(dataSnapshot.exists()){
-                        myRef.child("workerID").get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                        myRef.child(Constants.WORKER_ID_PATH).get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DataSnapshot> task) {
                                 if(task.isSuccessful()){

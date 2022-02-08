@@ -1,6 +1,8 @@
 package com.MayaGembom.shiftchecklist.Fragments;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,7 +16,9 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.MayaGembom.shiftchecklist.Activities.Activity_CreateAssignment;
 import com.MayaGembom.shiftchecklist.Activities.Activity_Main;
+import com.MayaGembom.shiftchecklist.Activities.Activity_Register;
 import com.MayaGembom.shiftchecklist.More.Constants;
 import com.MayaGembom.shiftchecklist.Objects.Assignment;
 import com.MayaGembom.shiftchecklist.R;
@@ -29,6 +33,7 @@ public class Fragment_EmployeeAssignments extends Fragment {
     private View view;
     private Context context;
     private FloatingActionButton add_FAB_assignments;
+    private Activity currentActivity;
     private String currentWorkerID;
 
     @Nullable
@@ -38,17 +43,28 @@ public class Fragment_EmployeeAssignments extends Fragment {
         context = view.getContext();
         findViews();
         recyclerView();
-
+        currentActivity = getActivity();
         currentWorkerID = Activity_Main.getCurrentWorkerID();
 
         if(currentWorkerID.equals(Constants.ShiftManager_ID))
             add_FAB_assignments.setVisibility(View.VISIBLE);
 
+
         return view;
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
 
+        add_FAB_assignments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(currentActivity, Activity_CreateAssignment.class));
+            }
+        });
 
+    }
 
     private void findViews() {
         main_LST_assignments = view.findViewById(R.id.main_LST_assignments);
