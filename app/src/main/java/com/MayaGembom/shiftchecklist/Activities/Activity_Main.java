@@ -27,6 +27,8 @@ import com.MayaGembom.shiftchecklist.Objects.ShiftManager;
 import com.MayaGembom.shiftchecklist.R;
 import com.bumptech.glide.Glide;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -45,6 +47,7 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
     private TextView header_LBL_role;
     private FrameLayout main_FRL_container;
     private static String currentWorkerID;
+
     private Employee employee;
     private ShiftManager shiftManager;
     private Owner owner;
@@ -53,7 +56,6 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         Intent intent = getIntent();
         currentWorkerID =intent.getExtras().getString("key");
 
@@ -61,15 +63,15 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
         initListener();
         toolbarView();
 
-
     }
+
+
 
     private void findViews() {
         main_TLB_toolbar = findViewById(R.id.main_TLB_toolbar);
         main_DRL_drawer = findViewById(R.id.main_DRL_drawer);
         main_NAV_navigation = findViewById(R.id.main_NAV_navigation);
         main_FRL_container = findViewById(R.id.main_FRL_container);
-
         View header = main_NAV_navigation.getHeaderView(0);
         header_IMG_profile = header.findViewById(R.id.header_IMG_profile);
         header_LBL_name = header.findViewById(R.id.header_LBL_name);
@@ -114,6 +116,7 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
             case R.id.menu_ITM_manage_employee_assign:
                 getSupportFragmentManager().beginTransaction().replace(main_FRL_container.getId(), new Fragment_EmployeeAssignments()).commit();
                 main_TLB_toolbar.setTitle("ניהול טופס משימות עובדים");
+
                 break;
             case R.id.menu_ITM_logout:
                 signOut();
@@ -206,7 +209,6 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
     public static String getCurrentWorkerID() {
         return currentWorkerID;
     }
-
 
 }
 

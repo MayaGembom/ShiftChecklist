@@ -105,20 +105,24 @@ public class Activity_Register extends AppCompatActivity {
                     if (checkedId == R.id.register_BTN_employee) {
                         currentWorkerID = "3";
                         token_EDT_password.setVisibility(View.INVISIBLE);
+                        toggle_BTN_department.setVisibility(View.VISIBLE);
                     }
                     if (checkedId == R.id.register_BTN_shiftManager) {
                         token_EDT_password.setHint("קוד אימות אחמ\"ש");
                         token_EDT_password.setVisibility(View.VISIBLE);
                         currentWorkerID = "2";
+                        toggle_BTN_department.setVisibility(View.VISIBLE);
                     }
                     if (checkedId == R.id.register_BTN_owner) {
                         token_EDT_password.setHint("קוד אימות בעלים");
                         token_EDT_password.setVisibility(View.VISIBLE);
                         currentWorkerID = "1";
+                        toggle_BTN_department.setVisibility(View.INVISIBLE);
                     }
                 }
             }
         });
+        toggle_BTN_department.setSingleSelection(true);
         toggle_BTN_department.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
@@ -144,16 +148,23 @@ public class Activity_Register extends AppCompatActivity {
                 String userName_text = register_EDT_first_name.getEditText().getText().toString();
                 String userLastName_text = register_EDT_last_name.getEditText().getText().toString();
                 String userID = MyFirebase.getInstance().getUser().getUid();
+                String password = token_EDT_password.getText().toString();
 
-                if (TextUtils.isEmpty(userName_text) ||TextUtils.isEmpty(userLastName_text)){
-                    Toast.makeText(Activity_Register.this, "נא מלא/י תמונה ושם פרטי+משפחה", Toast.LENGTH_SHORT).show();
-                }else
-                    progressDialog.setMessage("מאחסן את המידע..");
-                    progressDialog.show();
-                    registerNow(userName_text, userLastName_text,userID);
+                if (TextUtils.isEmpty(userName_text) || TextUtils.isEmpty(userLastName_text)|| TextUtils.isEmpty(password))
+                    Toast.makeText(Activity_Register.this, "נא מלא/י את כלל השדות", Toast.LENGTH_SHORT).show();
+                else if (currentWorkerID.equals(Constants.Owner_ID)){
+                    if(!password.equals("31596"))
+                        Toast.makeText(Activity_Register.this, "סיסמה שגויה", Toast.LENGTH_SHORT).show();
+                    else
+                    registerNow(userName_text, userLastName_text, userID);
+                }else if (currentWorkerID.equals(Constants.ShiftManager_ID)){
+                    if(!password.equals("81866"))
+                        Toast.makeText(Activity_Register.this, "סיסמה שגויה", Toast.LENGTH_SHORT).show();
+                    else
+                    registerNow(userName_text, userLastName_text, userID);
+                }
             }
         });
-
     }
 
     private void takePicture() {
@@ -167,6 +178,8 @@ public class Activity_Register extends AppCompatActivity {
     }
 
     private void registerNow(final String userFirstName,final String userLastName, String userId){
+        progressDialog.setMessage("מאחסן את המידע..");
+        progressDialog.show();
         DatabaseReference myRef = MyFirebase.getInstance().getFdb().getReference(Constants.USERS_PATH).child(userId);
         myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
             @Override
@@ -205,7 +218,6 @@ public class Activity_Register extends AppCompatActivity {
         toggle_BTN_user = findViewById(R.id.toggle_BTN_user);
         register_BTN_employee = findViewById(R.id.register_BTN_employee);
         token_EDT_password = findViewById(R.id.token_EDT_password);
-
         toggle_BTN_department = findViewById(R.id.toggle_BTN_department);
     }
 }

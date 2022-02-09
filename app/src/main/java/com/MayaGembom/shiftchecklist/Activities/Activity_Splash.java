@@ -4,7 +4,7 @@ import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-import android.util.Log;
+
 import android.view.View;
 import android.view.animation.LinearInterpolator;
 
@@ -14,7 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.MayaGembom.shiftchecklist.More.Constants;
 import com.MayaGembom.shiftchecklist.Objects.MyFirebase;
 
-import com.MayaGembom.shiftchecklist.Objects.User;
+
 import com.MayaGembom.shiftchecklist.R;
 import com.airbnb.lottie.LottieAnimationView;
 
@@ -37,7 +37,6 @@ public class Activity_Splash extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-
 
         findViews();
         startAnimation(splash_LAV_animation);

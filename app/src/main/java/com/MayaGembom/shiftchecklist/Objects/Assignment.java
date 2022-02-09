@@ -2,19 +2,20 @@ package com.MayaGembom.shiftchecklist.Objects;
 
 public class Assignment {
 
-    private String description = "";
+    private String title = "";
     private boolean visibility;
-    private String department;
+    private boolean status;
+    private String notes;
 
     public Assignment() {
     }
 
-    public String getDescription() {
-        return description;
+    public String getTitle() {
+        return title;
     }
 
-    public Assignment setDescription(String description) {
-        this.description = description;
+    public Assignment setTitle(String title) {
+        this.title = title;
         return this;
     }
 
@@ -25,5 +26,33 @@ public class Assignment {
     public Assignment setVisibility(boolean visibility) {
         this.visibility = visibility;
         return this;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public Assignment setStatus(boolean status) {
+        this.status = status;
+        return this;
+    }
+
+    public String getNotes() {
+        return notes;
+    }
+
+    public Assignment setNotes(String notes) {
+        this.notes = notes;
+        return this;
+    }
+
+    @Override
+    public String toString() {
+        return "Assignment{" +
+                "title='" + title + '\'' +
+                ", visibility=" + visibility +
+                ", status=" + status +
+                ", notes='" + notes + '\'' +
+                '}';
     }
 }

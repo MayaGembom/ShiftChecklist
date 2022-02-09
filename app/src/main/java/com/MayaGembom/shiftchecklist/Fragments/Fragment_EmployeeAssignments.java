@@ -18,12 +18,21 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.MayaGembom.shiftchecklist.Activities.Activity_CreateAssignment;
 import com.MayaGembom.shiftchecklist.Activities.Activity_Main;
-import com.MayaGembom.shiftchecklist.Activities.Activity_Register;
 import com.MayaGembom.shiftchecklist.More.Constants;
 import com.MayaGembom.shiftchecklist.Objects.Assignment;
+import com.MayaGembom.shiftchecklist.Objects.Employee;
+import com.MayaGembom.shiftchecklist.Objects.MyFirebase;
 import com.MayaGembom.shiftchecklist.R;
 import com.MayaGembom.shiftchecklist.Recycler.AdapterAssignment;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -35,6 +44,29 @@ public class Fragment_EmployeeAssignments extends Fragment {
     private FloatingActionButton add_FAB_assignments;
     private Activity currentActivity;
     private String currentWorkerID;
+    private String workerDepartment;
+    private Assignment assignment;
+    private String assignmentTitle;
+    private AdapterAssignment adapterAssignment;
+    ArrayList<Assignment> assignments;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        FirebaseUser firebaseUser = MyFirebase.getInstance().getUser();
+        String userId = firebaseUser.getUid();
+        DatabaseReference myRef = MyFirebase.getInstance().getFdb().getReference(Constants.USERS_PATH).child(userId).child(Constants.WORKER_DEPARTMENT_PATH);
+        myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DataSnapshot> task) {
+                if(task.isSuccessful()){
+                    workerDepartment = String.valueOf(task.getResult().getValue());
+                }
+                assignmentsChangeListener();
+            }
+        });
+    }
 
     @Nullable
     @Override
@@ -42,16 +74,54 @@ public class Fragment_EmployeeAssignments extends Fragment {
         view = inflater.inflate(R.layout.fragment_assignments, container, false);
         context = view.getContext();
         findViews();
-        recyclerView();
-        currentActivity = getActivity();
         currentWorkerID = Activity_Main.getCurrentWorkerID();
-
+        Log.d("pttttttt", "onCreate: " + currentWorkerID);
         if(currentWorkerID.equals(Constants.ShiftManager_ID))
             add_FAB_assignments.setVisibility(View.VISIBLE);
-
+        recyclerView();
+        currentActivity = getActivity();
 
         return view;
     }
+
+    private void assignmentsChangeListener() {
+        DatabaseReference myRef = MyFirebase.getInstance().getFdb().getReference(Constants.ASSIGNMENTS_PATH).child(workerDepartment);
+        ChildEventListener childEventListener = new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String previousChildName) {
+                assignmentTitle = dataSnapshot.getKey();
+                assignment = dataSnapshot.getValue(Assignment.class); //assignment user from DB
+                assignment.setTitle(assignmentTitle);
+                assignments.add(assignment);
+                adapterAssignment.notifyItemInserted(assignments.size() - 1);
+                adapterAssignment.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        };
+
+        myRef.addChildEventListener(childEventListener);
+
+    }
+
 
     @Override
     public void onStart() {
@@ -60,7 +130,10 @@ public class Fragment_EmployeeAssignments extends Fragment {
         add_FAB_assignments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(currentActivity, Activity_CreateAssignment.class));
+                Intent intent = new Intent(currentActivity, Activity_CreateAssignment.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                intent.putExtra("department_name",workerDepartment);
+                startActivity(intent);
             }
         });
 
@@ -72,10 +145,10 @@ public class Fragment_EmployeeAssignments extends Fragment {
     }
 
     private void recyclerView() {
-        ArrayList<Assignment> assignments = generateAssignments();
-        AdapterAssignment adapterAssignment = new AdapterAssignment(assignments);
+        assignments = generateAssignments();
+        adapterAssignment = new AdapterAssignment(assignments);
         Assignment dateAssignment = adapterAssignment.getItem(0);
-        dateAssignment.setDescription("בחירת תאריך משמרת");
+        dateAssignment.setTitle("בחירת תאריך משמרת");
 
         // Vertically
         main_LST_assignments.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
@@ -100,15 +173,9 @@ public class Fragment_EmployeeAssignments extends Fragment {
         ArrayList<Assignment> assignments = new ArrayList<>();
 
         assignments.add(new Assignment()
-                .setDescription("בלהבלה")
+                .setTitle("תאריך")
         );
 
-        assignments.add(new Assignment()
-                .setDescription("הורדת הכיסאות בשני הברים")
-        );
-        assignments.add(new Assignment()
-                .setDescription("הדלקת מכונת קפה + סאקה חם")
-        );
 
         return assignments;
     }

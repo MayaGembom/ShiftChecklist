@@ -29,33 +29,20 @@ public class Activity_CreateAssignment extends AppCompatActivity {
     private TextInputEditText form_EDT_field;
     private FrameLayout main_FRL_container;
     private String workerDepartment;
-    private String assignment;
+    private String assignmentTitle;
     private Assignment currentAssignment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_assignment);
+        Intent intent = getIntent();
+        workerDepartment =intent.getExtras().getString("department_name");
 
         findViews();
-        getWorkerDepartment();
-        newAssignment();
+        addNewAssignment();
     }
 
-    private void getWorkerDepartment() {
-        FirebaseUser firebaseUser = MyFirebase.getInstance().getUser();
-        String userId = firebaseUser.getUid();
-        DatabaseReference myRef = MyFirebase.getInstance().getFdb().getReference(Constants.USERS_PATH).child(userId).child(Constants.WORKER_DEPARTMENT_PATH);
-        myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if(task.isSuccessful()){
-                    workerDepartment = String.valueOf(task.getResult().getValue());
-                }
-            }
-        });
-
-    }
 
     private void findViews() {
         panel_BTN_create = findViewById(R.id.panel_BTN_create);
@@ -65,25 +52,22 @@ public class Activity_CreateAssignment extends AppCompatActivity {
     }
 
 
-    public void newAssignment() {
+    public void addNewAssignment() {
         panel_BTN_create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                assignment = form_EDT_field.getText().toString();
+                assignmentTitle = form_EDT_field.getText().toString();
                 form_EDT_field.setText("");
 
-
-                DatabaseReference myRef = MyFirebase.getInstance().getFdb().getReference(Constants.ASSIGNMENTS_PATH).child(workerDepartment);
-
+                DatabaseReference myRef = MyFirebase.getInstance().getFdb().getReference(Constants.ASSIGNMENTS_PATH).child(workerDepartment).child(assignmentTitle);
                 myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
                         if(task.isSuccessful()) {
-                            currentAssignment = new Assignment().setDescription(assignment);
+                            currentAssignment = new Assignment();
                             myRef.setValue(currentAssignment);
                         }
-                        getSupportFragmentManager().beginTransaction().replace(main_FRL_container.getId(), new Fragment_EmployeeAssignments()).commit();
-                        Activity_CreateAssignment.this.finish();
+                        finish();
                     }
                 });
 
