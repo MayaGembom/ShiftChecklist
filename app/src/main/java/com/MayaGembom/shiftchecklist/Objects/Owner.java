@@ -10,4 +10,5 @@ public class Owner extends User implements Interface_Owner {
     public Owner(String imageURL, String userFirstName, String userLastName, String workerID) {
         super(imageURL, userFirstName, userLastName, workerID);
     }
+
 }

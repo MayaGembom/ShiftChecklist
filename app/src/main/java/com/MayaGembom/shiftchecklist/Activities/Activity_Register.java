@@ -160,15 +160,19 @@ public class Activity_Register extends AppCompatActivity {
                 switch (currentWorkerID) {
                     case Constants.Employee_ID:
                         employee = new Employee(myDownloadUrl, userFirstName, userLastName, currentWorkerID, whichDepartment);
+                        employee.setImageURL(myDownloadUrl);
+                        employee.setWorkerID(currentWorkerID);
                         myRef.setValue(employee);
                         break;
                     case Constants.ShiftManager_ID:
                         shiftManager = new ShiftManager(myDownloadUrl, userFirstName, userLastName, currentWorkerID, whichDepartment);
+                        shiftManager.setImageURL(myDownloadUrl);
                         shiftManager.setWorkerID(currentWorkerID);
                         myRef.setValue(shiftManager);
                         break;
                     case Constants.Owner_ID:
                         owner = new Owner(myDownloadUrl, userFirstName, userLastName, currentWorkerID);
+                        owner.setImageURL(myDownloadUrl);
                         owner.setWorkerID(currentWorkerID);
                         myRef.setValue(owner);
                         break;

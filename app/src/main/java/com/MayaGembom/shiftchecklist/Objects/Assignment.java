@@ -1,5 +1,11 @@
 package com.MayaGembom.shiftchecklist.Objects;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+
 public class Assignment {
 
     private String title = "";
@@ -55,4 +61,5 @@ public class Assignment {
                 ", notes='" + notes + '\'' +
                 '}';
     }
+
 }

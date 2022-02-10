@@ -11,44 +11,45 @@
     android:layout_margin="12dp"
     android:layoutDirection="rtl">
 
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#FFC7F2">
 
-
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/assignment_TXT_number"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=" "
+            android:layout_marginRight="4dp"
+            android:fontFamily="@font/varela_round"
             android:maxLines="2"
             android:minLines="2"
-            android:gravity="center"
-            android:fontFamily="@font/varela_round"
-            android:layout_marginLeft="4dp"
-            android:textSize="21sp"
             android:textColor="@color/black"
+            android:textSize="22sp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/assignment_LBL_title"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="8dp"
-            android:layout_marginStart="2dp"
-            android:ellipsize="end"
-            android:maxLines="2"
+            android:layout_marginStart="5dp"
+            android:fontFamily="@font/varela_round"
             android:minLines="2"
             android:textColor="@color/black"
-            android:textSize="21sp"
-            android:fontFamily="@font/varela_round"
-            android:gravity="center_vertical"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:textSize="22sp"
             app:layout_constraintStart_toEndOf="@+id/assignment_TXT_number"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/assignment_BTN_delete"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/assignment_BTN_delete"
+            android:layout_width="47dp"
+            android:layout_height="60dp"
+            android:src="@drawable/remove"
+            tools:ignore="MissingConstraints" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/assignment_LAY_expanded"
@@ -62,9 +63,9 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:gravity="center"
                 android:layout_margin="8dp"
+                android:gravity="center"
+                android:orientation="vertical"
                 tools:ignore="MissingConstraints">
 
                 <com.google.android.material.button.MaterialButtonToggleGroup
@@ -74,22 +75,21 @@
 
                     <Button
                         android:id="@+id/assignment_BTN_done"
+                        style="?attr/materialButtonOutlinedStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/Done"
                         android:backgroundTint="#C8FFC7"
-                        style="?attr/materialButtonOutlinedStyle"
-                        />
+                        android:text="@string/Done" />
+
                     <Button
                         android:id="@+id/assignment_BTN_notdone"
+                        style="?attr/materialButtonOutlinedStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/NotDone"
                         android:backgroundTint="#FFC7CA"
-                        style="?attr/materialButtonOutlinedStyle"
-                        />
+                        android:text="@string/NotDone" />
                 </com.google.android.material.button.MaterialButtonToggleGroup>
 
                 <com.google.android.material.textfield.TextInputLayout
@@ -105,11 +105,10 @@
                     <com.google.android.material.textfield.TextInputEditText
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:maxLength="40"
                         android:textColor="@color/black"
                         android:textColorHint="@color/black"
-                        android:maxLength="40"
-                        android:textSize="16sp"
-                    />
+                        android:textSize="16sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
 
@@ -122,8 +121,8 @@
                     android:layout_weight="1"
                     android:backgroundTint="#FFC7F2"
                     app:icon="@drawable/ic_camera"
-                    app:iconTint="@color/black"
-                    app:iconGravity="textEnd"/>
+                    app:iconGravity="textEnd"
+                    app:iconTint="@color/black" />
 
 
             </LinearLayout>

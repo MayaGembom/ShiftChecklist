@@ -65,7 +65,9 @@ public class Activity_CreateAssignment extends AppCompatActivity {
                     public void onComplete(@NonNull Task<DataSnapshot> task) {
                         if(task.isSuccessful()) {
                             currentAssignment = new Assignment();
+                            currentAssignment.setTitle(assignmentTitle);
                             myRef.setValue(currentAssignment);
+
                         }
                         finish();
                     }

@@ -48,7 +48,8 @@ public class Fragment_EmployeeAssignments extends Fragment {
     private Assignment assignment;
     private String assignmentTitle;
     private AdapterAssignment adapterAssignment;
-    ArrayList<Assignment> assignments;
+    private ArrayList<Assignment> assignments = new ArrayList<>();
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -62,11 +63,13 @@ public class Fragment_EmployeeAssignments extends Fragment {
             public void onComplete(@NonNull Task<DataSnapshot> task) {
                 if(task.isSuccessful()){
                     workerDepartment = String.valueOf(task.getResult().getValue());
+                    assignmentsChangeListener();
+                    recyclerView();
                 }
-                assignmentsChangeListener();
             }
         });
     }
+
 
     @Nullable
     @Override
@@ -75,11 +78,11 @@ public class Fragment_EmployeeAssignments extends Fragment {
         context = view.getContext();
         findViews();
         currentWorkerID = Activity_Main.getCurrentWorkerID();
-        Log.d("pttttttt", "onCreate: " + currentWorkerID);
         if(currentWorkerID.equals(Constants.ShiftManager_ID))
             add_FAB_assignments.setVisibility(View.VISIBLE);
-        recyclerView();
+
         currentActivity = getActivity();
+
 
         return view;
     }
@@ -91,24 +94,26 @@ public class Fragment_EmployeeAssignments extends Fragment {
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String previousChildName) {
                 assignmentTitle = dataSnapshot.getKey();
                 assignment = dataSnapshot.getValue(Assignment.class); //assignment user from DB
-                assignment.setTitle(assignmentTitle);
                 assignments.add(assignment);
-                adapterAssignment.notifyItemInserted(assignments.size() - 1);
-                adapterAssignment.notifyDataSetChanged();
+                adapterAssignment.notifyItemInserted(assignments.size() -1);
+                //adapterAssignment.notifyDataSetChanged();
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
 
             }
-
-            @Override
+@Override
             public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
+                assignmentTitle = dataSnapshot.getKey();
+                assignment = dataSnapshot.getValue(Assignment.class); //assignment user from DB
+                assignment.setTitle(assignmentTitle);
+                assignments.remove(assignment);
             }
 
             @Override
             public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
 
             }
 
@@ -126,7 +131,6 @@ public class Fragment_EmployeeAssignments extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
         add_FAB_assignments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -136,7 +140,6 @@ public class Fragment_EmployeeAssignments extends Fragment {
                 startActivity(intent);
             }
         });
-
     }
 
     private void findViews() {
@@ -145,40 +148,46 @@ public class Fragment_EmployeeAssignments extends Fragment {
     }
 
     private void recyclerView() {
-        assignments = generateAssignments();
         adapterAssignment = new AdapterAssignment(assignments);
-        Assignment dateAssignment = adapterAssignment.getItem(0);
-        dateAssignment.setTitle("בחירת תאריך משמרת");
-
         // Vertically
         main_LST_assignments.setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
         main_LST_assignments.setHasFixedSize(true);
         main_LST_assignments.setItemAnimator(new DefaultItemAnimator());
         main_LST_assignments.setAdapter(adapterAssignment);
 
-
         adapterAssignment.setAssignmentItemClickListener(new AdapterAssignment.AssignmentItemClickListener(){
             @Override
             public void assignmentItemClicked(Assignment assignment, int position) {
-                if(position == 0)
-                {
+                if (currentWorkerID.equals(Constants.ShiftManager_ID)) {
                     assignment.setVisibility(true);
                 }
                 assignment.setVisibility(!assignment.isVisibility());
             }
         });
+
+        adapterAssignment.setAssignmentItemDeleteListener(new AdapterAssignment.AssignmentItemDeleteListener() {
+            @Override
+            public void assignmentDeleteItemClicked(int position) {
+                DatabaseReference myRef = MyFirebase.getInstance().getFdb().getReference(Constants.ASSIGNMENTS_PATH).child(workerDepartment);
+                myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        myRef.child(assignments.get(position).getTitle()).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                assignments.remove(position);
+                                adapterAssignment.notifyDataSetChanged();
+                            }
+                        });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+
+            }
+        });
     }
-
-    private ArrayList<Assignment> generateAssignments() {
-        ArrayList<Assignment> assignments = new ArrayList<>();
-
-        assignments.add(new Assignment()
-                .setTitle("תאריך")
-        );
-
-
-        return assignments;
-    }
-
-
 }

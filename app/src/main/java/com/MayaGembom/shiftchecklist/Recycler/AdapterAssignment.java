@@ -5,8 +5,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.MayaGembom.shiftchecklist.Activities.Activity_Main;
+import com.MayaGembom.shiftchecklist.More.Constants;
 import com.MayaGembom.shiftchecklist.Objects.Assignment;
 import com.MayaGembom.shiftchecklist.R;
 import com.google.android.material.textview.MaterialTextView;
@@ -17,6 +21,9 @@ public class AdapterAssignment extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     private ArrayList<Assignment> assignments = new ArrayList<>();
     private AssignmentItemClickListener assignmentItemClickListener;
+    private AssignmentItemDeleteListener assignmentItemDeleteListener;
+
+    private String currentWorkerID;
 
     public AdapterAssignment(ArrayList<Assignment> assignments) {
         this.assignments = assignments;
@@ -24,6 +31,11 @@ public class AdapterAssignment extends RecyclerView.Adapter<RecyclerView.ViewHol
 
     public AdapterAssignment setAssignmentItemClickListener(AssignmentItemClickListener assignmentItemClickListener) {
         this.assignmentItemClickListener = assignmentItemClickListener;
+        return this;
+    }
+
+    public AdapterAssignment setAssignmentItemDeleteListener(AssignmentItemDeleteListener assignmentItemDeleteListener) {
+        this.assignmentItemDeleteListener = assignmentItemDeleteListener;
         return this;
     }
 
@@ -40,11 +52,8 @@ public class AdapterAssignment extends RecyclerView.Adapter<RecyclerView.ViewHol
         AssignmentViewHolder assignmentViewHolder = (AssignmentViewHolder) holder;
         Assignment assignment = getItem(position);
         assignmentViewHolder.assignment_LBL_title.setText(assignment.getTitle());
-        assignmentViewHolder.assignment_TXT_number.setText(position + ".");
-        if(position ==  0){
-            assignmentViewHolder.assignment_LBL_title.setGravity(Gravity.CENTER);
-            assignmentViewHolder.assignment_TXT_number.setText(" ");
-        }
+        assignmentViewHolder.assignment_TXT_number.setText(position+1 + ".");
+
         boolean isVisible = assignment.isVisibility();
         ((AssignmentViewHolder) holder).constraintLayout.setVisibility(isVisible ? View.VISIBLE : View.GONE);
     }
@@ -62,18 +71,27 @@ public class AdapterAssignment extends RecyclerView.Adapter<RecyclerView.ViewHol
         void assignmentItemClicked(Assignment assignment, int position);
     }
 
+    public interface AssignmentItemDeleteListener {
+        void assignmentDeleteItemClicked(int position);
+    }
 
     public class AssignmentViewHolder extends RecyclerView.ViewHolder {
         public MaterialTextView assignment_TXT_number;
         public MaterialTextView assignment_LBL_title;
+        public AppCompatImageView assignment_BTN_delete;
         public ConstraintLayout constraintLayout;
+
+
 
         public AssignmentViewHolder(final View itemView) {
             super(itemView);
             this.assignment_TXT_number = itemView.findViewById(R.id.assignment_TXT_number);
             this.assignment_LBL_title = itemView.findViewById(R.id.assignment_LBL_title);
+            this.assignment_BTN_delete = itemView.findViewById(R.id.assignment_BTN_delete);
             this.constraintLayout = itemView.findViewById(R.id.assignment_LAY_expanded);
-
+            currentWorkerID = Activity_Main.getCurrentWorkerID();
+            if(currentWorkerID.equals(Constants.Employee_ID))
+                assignment_BTN_delete.setVisibility(View.INVISIBLE);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -83,6 +101,12 @@ public class AdapterAssignment extends RecyclerView.Adapter<RecyclerView.ViewHol
                 }
             });
 
+            assignment_BTN_delete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    assignmentItemDeleteListener.assignmentDeleteItemClicked(getAdapterPosition());
+                }
+            });
         }
     }
 

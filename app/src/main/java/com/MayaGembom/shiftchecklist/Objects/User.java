@@ -11,7 +11,7 @@ public class User {
     }
 
     public User(String imageURL, String userFirstName, String userLastName, String workerID) {
-        this.imageURL = imageURL;
+        this.imageURL = "default";
         this.userFirstName = userFirstName;
         this.userLastName = userLastName;
         this.workerID = workerID;
