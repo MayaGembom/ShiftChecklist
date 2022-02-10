@@ -16,5 +16,6 @@ public class Constants {
     public static final String RESTAURANT_DEPARTMENT = "RestaurantDepartment";
     public static final String BAR_DEPARTMENT = "BarDepartment";
 
-
+    public static final String USERNAME = "shiftchecklistapp@gmail.com";
+    public static final String PASS = "Spider31596";
 }

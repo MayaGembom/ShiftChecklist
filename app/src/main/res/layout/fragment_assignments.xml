@@ -30,6 +30,19 @@
             app:fabCustomSize="80dp"
             app:maxImageSize="50dp"
             />
+
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/send_FAB_assignments"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="45dp"
+            android:src="@drawable/send"
+            app:tint="@color/black"
+            android:visibility="invisible"
+            app:fabCustomSize="80dp"
+            app:maxImageSize="50dp"
+            />
     </FrameLayout>
 
 

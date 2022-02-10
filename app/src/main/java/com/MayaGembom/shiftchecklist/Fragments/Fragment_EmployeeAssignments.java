@@ -20,7 +20,6 @@ import com.MayaGembom.shiftchecklist.Activities.Activity_CreateAssignment;
 import com.MayaGembom.shiftchecklist.Activities.Activity_Main;
 import com.MayaGembom.shiftchecklist.More.Constants;
 import com.MayaGembom.shiftchecklist.Objects.Assignment;
-import com.MayaGembom.shiftchecklist.Objects.Employee;
 import com.MayaGembom.shiftchecklist.Objects.MyFirebase;
 import com.MayaGembom.shiftchecklist.R;
 import com.MayaGembom.shiftchecklist.Recycler.AdapterAssignment;
@@ -37,11 +36,11 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 
 public class Fragment_EmployeeAssignments extends Fragment {
-
     private RecyclerView main_LST_assignments;
     private View view;
     private Context context;
     private FloatingActionButton add_FAB_assignments;
+    private FloatingActionButton send_FAB_assignments;
     private Activity currentActivity;
     private String currentWorkerID;
     private String workerDepartment;
@@ -80,6 +79,8 @@ public class Fragment_EmployeeAssignments extends Fragment {
         currentWorkerID = Activity_Main.getCurrentWorkerID();
         if(currentWorkerID.equals(Constants.ShiftManager_ID))
             add_FAB_assignments.setVisibility(View.VISIBLE);
+        if(currentWorkerID.equals(Constants.Employee_ID))
+            send_FAB_assignments.setVisibility(View.VISIBLE);
 
         currentActivity = getActivity();
 
@@ -96,7 +97,6 @@ public class Fragment_EmployeeAssignments extends Fragment {
                 assignment = dataSnapshot.getValue(Assignment.class); //assignment user from DB
                 assignments.add(assignment);
                 adapterAssignment.notifyItemInserted(assignments.size() -1);
-                //adapterAssignment.notifyDataSetChanged();
             }
 
             @Override
@@ -140,11 +140,27 @@ public class Fragment_EmployeeAssignments extends Fragment {
                 startActivity(intent);
             }
         });
+
+        // Send Email
+        send_FAB_assignments.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SendEmailService.getInstance(currentActivity).emailExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        SendEmailService.getInstance(currentActivity).SendEmail();
+                    }
+                });
+            }
+        });
+
     }
 
     private void findViews() {
         main_LST_assignments = view.findViewById(R.id.main_LST_assignments);
         add_FAB_assignments = view.findViewById(R.id.add_FAB_assignments);
+        send_FAB_assignments = view.findViewById(R.id.send_FAB_assignments);
+
     }
 
     private void recyclerView() {
