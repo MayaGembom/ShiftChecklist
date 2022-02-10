@@ -69,12 +69,12 @@
                 tools:ignore="MissingConstraints">
 
                 <com.google.android.material.button.MaterialButtonToggleGroup
-                    android:id="@+id/toggleButton"
+                    android:id="@+id/assignment_TBTN_status"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <Button
-                        android:id="@+id/assignment_BTN_done"
+                        android:id="@+id/assignment_BTN_complete"
                         style="?attr/materialButtonOutlinedStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -83,7 +83,7 @@
                         android:text="@string/Done" />
 
                     <Button
-                        android:id="@+id/assignment_BTN_notdone"
+                        android:id="@+id/assignment_BTN_incomplete"
                         style="?attr/materialButtonOutlinedStyle"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -108,21 +108,10 @@
                         android:maxLength="40"
                         android:textColor="@color/black"
                         android:textColorHint="@color/black"
+                        android:layout_marginBottom="5dp"
                         android:textSize="16sp" />
 
                 </com.google.android.material.textfield.TextInputLayout>
-
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/assignment_BTN_uplodeimg"
-                    style="?attr/materialButtonOutlinedStyle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:backgroundTint="#FFC7F2"
-                    app:icon="@drawable/ic_camera"
-                    app:iconGravity="textEnd"
-                    app:iconTint="@color/black" />
 
 
             </LinearLayout>

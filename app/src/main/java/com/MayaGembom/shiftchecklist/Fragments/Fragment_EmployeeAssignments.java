@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.MayaGembom.shiftchecklist.Activities.Activity_CreateAssignment;
 import com.MayaGembom.shiftchecklist.Activities.Activity_Main;
 import com.MayaGembom.shiftchecklist.More.Constants;
+import com.MayaGembom.shiftchecklist.More.SendEmailService;
 import com.MayaGembom.shiftchecklist.Objects.Assignment;
 import com.MayaGembom.shiftchecklist.Objects.MyFirebase;
 import com.MayaGembom.shiftchecklist.R;
@@ -32,6 +32,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+
 
 import java.util.ArrayList;
 
@@ -145,6 +146,7 @@ public class Fragment_EmployeeAssignments extends Fragment {
         send_FAB_assignments.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 SendEmailService.getInstance(currentActivity).emailExecutor.execute(new Runnable() {
                     @Override
                     public void run() {
@@ -153,7 +155,6 @@ public class Fragment_EmployeeAssignments extends Fragment {
                 });
             }
         });
-
     }
 
     private void findViews() {
@@ -173,11 +174,22 @@ public class Fragment_EmployeeAssignments extends Fragment {
 
         adapterAssignment.setAssignmentItemClickListener(new AdapterAssignment.AssignmentItemClickListener(){
             @Override
-            public void assignmentItemClicked(Assignment assignment, int position) {
+            public void assignmentItemClicked(Assignment assignment, int position, String notes) {
                 if (currentWorkerID.equals(Constants.ShiftManager_ID)) {
                     assignment.setVisibility(true);
                 }
                 assignment.setVisibility(!assignment.isVisibility());
+                assignmentTitle = assignment.getTitle();
+                DatabaseReference myRef = MyFirebase.getInstance().getFdb().getReference(Constants.ASSIGNMENTS_PATH).child(workerDepartment).child(assignmentTitle);
+                myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<DataSnapshot> task) {
+                        if(task.isSuccessful()) {
+                            myRef.child("notes").setValue(notes);
+                        }
+                    }
+                });
+                adapterAssignment.notifyDataSetChanged();
             }
         });
 

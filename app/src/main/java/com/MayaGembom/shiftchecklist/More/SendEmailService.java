@@ -1,8 +1,6 @@
-package com.MayaGembom.shiftchecklist.Fragments;
+package com.MayaGembom.shiftchecklist.More;
 
 import android.content.Context;
-
-import com.MayaGembom.shiftchecklist.More.Constants;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -22,15 +20,12 @@ public class SendEmailService {
 
     private static SendEmailService instance = null;
     private static Context ctx;
-
-
-    static final ExecutorService emailExecutor = Executors.newSingleThreadExecutor();
+    public static final ExecutorService emailExecutor = Executors.newSingleThreadExecutor();
 
     Properties prop;
     Session session;
     private SendEmailService(Context context) {
         ctx = context;
-
         prop = new Properties();
         prop.put("mail.smtp.auth", true);
         prop.put("mail.smtp.host", "smtp.gmail.com");
@@ -62,7 +57,7 @@ public class SendEmailService {
                     InternetAddress.parse("shiftchecklistapp@gmail.com")
             );
             message.setSubject("דו\"ח סיום משמרת " +new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
-            message.setText("היי מנהל יקר, להלן דיווח העובדים");
+            message.setText(" ");
 
             Transport.send(message);
 

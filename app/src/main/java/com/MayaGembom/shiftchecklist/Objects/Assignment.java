@@ -1,16 +1,10 @@
 package com.MayaGembom.shiftchecklist.Objects;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-
 public class Assignment {
 
-    private String title = "";
+    private String title;
     private boolean visibility;
-    private boolean status;
+    private String status;
     private String notes;
 
     public Assignment() {
@@ -34,11 +28,11 @@ public class Assignment {
         return this;
     }
 
-    public boolean isStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public Assignment setStatus(boolean status) {
+    public Assignment setStatus(String status) {
         this.status = status;
         return this;
     }
