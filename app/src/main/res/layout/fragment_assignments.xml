@@ -28,6 +28,7 @@
             app:tint="@color/black"
             android:visibility="invisible"
             app:fabCustomSize="80dp"
+            android:clickable="true"
             app:maxImageSize="50dp"
             />
 
@@ -40,6 +41,7 @@
             android:src="@drawable/send"
             app:tint="@color/black"
             android:visibility="invisible"
+            android:clickable="true"
             app:fabCustomSize="80dp"
             app:maxImageSize="50dp"
             />

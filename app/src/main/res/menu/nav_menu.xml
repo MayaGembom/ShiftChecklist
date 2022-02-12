@@ -4,10 +4,6 @@
     <item android:title="">
         <menu>
             <item
-                android:id="@+id/menu_ITM_profile"
-                android:title="@string/USER_PROFILE"
-                android:icon="@drawable/settings_icon" />
-            <item
                 android:id="@+id/menu_ITM_employee_assign"
                 android:title="@string/ASSIGNMENTS"
                 android:icon="@drawable/assignment_icon" />
@@ -23,6 +19,9 @@
                 android:id="@+id/menu_ITM_manage_shiftmanager_assign"
                 android:icon="@drawable/ic_manage_assignment"
                 android:title="@string/MANAGE_S_ASSIGNMENTS" />
+            <item android:title="" />
+            <item android:title="" />
+            <item android:title="" />
             <item android:title="" />
             <item android:title="" />
             <item android:title="" />

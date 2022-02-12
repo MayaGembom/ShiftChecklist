@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:layoutDirection="rtl"
+    tools:context=".Activities.Activity_ChooseDepartment">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="350dp"
+        android:layout_height="300dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="216dp"
+        android:elevation="8dp"
+        app:cardBackgroundColor="@color/white"
+        app:cardCornerRadius="6dp"
+        app:cardElevation="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/game_over_TXT_pikachu_survive"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:text="@string/CHOOSE_DEPARTMENT"
+                android:textColor="@color/black"
+                android:textSize="24sp"
+                android:fontFamily="@font/varela_round"
+                android:textStyle="bold" />
+
+            <com.google.android.material.button.MaterialButtonToggleGroup
+                android:id="@+id/toggle_BTN_department"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:layout_marginTop="20dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/register_BTN_restaurant"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:insetLeft="5dp"
+                    android:insetRight="5dp"
+                    android:text="@string/RESTAURANT"
+                    android:fontFamily="@font/varela_round"
+                    android:textColor="@color/black"
+                    android:backgroundTint="#ECE8E8"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/register_BTN_delivery"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:insetLeft="5dp"
+                    android:insetRight="5dp"
+                    android:text="@string/DELIVERY"
+                    android:fontFamily="@font/varela_round"
+                    android:textColor="@color/black"
+                    android:backgroundTint="#ECE8E8"
+                    android:clickable="true"
+                    />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/register_BTN_bar"
+                    style="?attr/materialButtonOutlinedStyle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="3"
+                    android:insetLeft="5dp"
+                    android:insetRight="5dp"
+                    android:fontFamily="@font/varela_round"
+                    android:text="@string/BAR"
+                    android:textColor="@color/black"
+                    android:backgroundTint="#ECE8E8" />
+            </com.google.android.material.button.MaterialButtonToggleGroup>
+
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/panel_BTN_save"
+                style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="60dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="50dp"
+                android:backgroundTint="#FFC7F2"
+                android:elevation="8dp"
+                android:fontFamily="@font/varela_round"
+                android:text="@string/NEXT"
+                android:textColor="@color/black"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                app:icon="@drawable/ic_baseline_skip_next_24"
+                app:iconGravity="end"
+                app:iconTint="@color/black"
+                app:strokeColor="@color/cardview_shadow_start_color"
+                app:strokeWidth="2dp" />
+
+            <FrameLayout
+                android:id="@+id/main_FRL_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></FrameLayout>
+
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <FrameLayout
+        android:id="@+id/frameLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </FrameLayout>
+</RelativeLayout>

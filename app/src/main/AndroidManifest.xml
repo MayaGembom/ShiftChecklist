@@ -30,6 +30,10 @@
             android:exported="true"
             android:screenOrientation="portrait"/>
         <activity
+            android:name=".Activities.Activity_ChooseDepartment"
+            android:exported="true"
+            android:screenOrientation="portrait"/>
+        <activity
             android:name=".Activities.Activity_Splash"
             android:exported="true"
             android:screenOrientation="portrait">

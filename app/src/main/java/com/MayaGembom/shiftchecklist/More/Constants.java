@@ -11,7 +11,8 @@ public class Constants {
     public static final String Employee_ID = "3";
 
 
-    public static final String ASSIGNMENTS_PATH = "Assignments";
+    public static final String ASSIGNMENTS_PATH = "EmployeeAssignments";
+    public static final String ASSIGNMENTS_SM_PATH = "ShiftManagerAssignments";
     public static final String DELIVERY_DEPARTMENT = "DeliveryDepartment";
     public static final String RESTAURANT_DEPARTMENT = "RestaurantDepartment";
     public static final String BAR_DEPARTMENT = "BarDepartment";

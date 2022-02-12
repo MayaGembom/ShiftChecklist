@@ -26,7 +26,7 @@
     <string name="RESTAURANT">מסעדה</string>
     <string name="DELIVERY">משלוחים</string>
     <string name="BAR">בר</string>
-
+    <string name="CHOOSE_DEPARTMENT">בחירת מחלקה לשיוך משימות:</string>
     <string name="motivation">""\"האדם היחיד שנועדתם להיות הוא האדם שאתם מחליטים להיות"\"</string>
     <string name="author">ראלף וולדו אמרסון</string>
     <string name="TOKEN">קוד אימות</string>
@@ -37,6 +37,7 @@
 
     <string name="INSERT_ASSIGNMENT">הוספת משימה:</string>
     <string name="ADD">שמירה</string>
+    <string name="NEXT">המשך</string>
 
 
 </resources>

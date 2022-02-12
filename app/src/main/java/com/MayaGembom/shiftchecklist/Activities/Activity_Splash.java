@@ -4,26 +4,15 @@ import android.animation.Animator;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
-
 import android.view.View;
 import android.view.animation.LinearInterpolator;
-
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-
 import com.MayaGembom.shiftchecklist.More.Constants;
 import com.MayaGembom.shiftchecklist.Objects.MyFirebase;
 
-
 import com.MayaGembom.shiftchecklist.R;
 import com.airbnb.lottie.LottieAnimationView;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-
 import com.google.firebase.database.DatabaseReference;
 
 
@@ -99,17 +88,14 @@ public class Activity_Splash extends AppCompatActivity {
         FirebaseUser firebaseUser = MyFirebase.getInstance().getUser();
         String userId = firebaseUser.getUid();
         DatabaseReference myRef = MyFirebase.getInstance().getFdb().getReference(Constants.USERS_PATH).child(userId).child(Constants.WORKER_ID_PATH);
-        myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DataSnapshot> task) {
-                if(task.isSuccessful()){
-                    workerID = String.valueOf(task.getResult().getValue());
-                    Intent intent = new Intent(Activity_Splash.this, Activity_Main.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                    intent.putExtra("key",workerID);
-                    startActivity(intent);
-                    finish();
-                }
+        myRef.get().addOnCompleteListener(task -> {
+            if(task.isSuccessful()){
+                workerID = String.valueOf(task.getResult().getValue());
+                Intent intent = new Intent(Activity_Splash.this, Activity_Main.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                intent.putExtra("key",workerID);
+                startActivity(intent);
+                finish();
             }
         });
     }

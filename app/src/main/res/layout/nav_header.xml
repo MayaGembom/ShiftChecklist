@@ -7,19 +7,32 @@
     android:minHeight="200dp"
     android:orientation="vertical"
     android:background="@color/black"
-    android:gravity="bottom"
+    android:gravity="center"
     android:padding="20dp"
-    android:layoutDirection="ltr">
+    android:layoutDirection="rtl">
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/header_IMG_profile"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
         android:layout_gravity="center"
-        app:civ_border_color="@color/white"
-        app:civ_border_width="2dp"
-       />
+        app:civ_border_color="@color/cardview_dark_background"
+        app:civ_border_width="2dp" />
+
+        <ImageView
+            android:id="@+id/header_IMG_edit"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_gravity="bottom|start"
+            android:layout_margin="4dp"
+            android:layoutDirection="ltr"
+            android:src="@drawable/edit"
+            android:visibility="visible" />
+    </FrameLayout>
 
     <TextView
         android:id="@+id/header_LBL_name"
@@ -29,7 +42,7 @@
         android:layout_marginTop="10dp"
         android:fontFamily="@font/varela_round"
         android:maxLines="1"
-        android:textColor="@color/white"
+        android:textColor="#FFC7F2"
         android:textSize="22sp" />
 
     <TextView
@@ -39,7 +52,7 @@
         android:layout_gravity="center"
         android:fontFamily="@font/varela_round"
         android:text="תפקיד:"
-        android:textColor="#D887C5"
+        android:textColor="#FFFFFF"
         android:textSize="15sp" />
 
 

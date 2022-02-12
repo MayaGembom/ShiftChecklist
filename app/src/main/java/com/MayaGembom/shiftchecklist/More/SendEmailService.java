@@ -1,8 +1,13 @@
 package com.MayaGembom.shiftchecklist.More;
 
 import android.content.Context;
+import android.text.TextUtils;
+import android.util.Log;
+
+import com.MayaGembom.shiftchecklist.Objects.Assignment;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
 import java.util.concurrent.ExecutorService;
@@ -48,7 +53,7 @@ public class SendEmailService {
         return instance;
     }
 
-    public void SendEmail() {
+    public void SendEmail(ArrayList<Assignment> assignments) {
         try {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress(Constants.USERNAME));
@@ -57,7 +62,24 @@ public class SendEmailService {
                     InternetAddress.parse("shiftchecklistapp@gmail.com")
             );
             message.setSubject("דו\"ח סיום משמרת " +new SimpleDateFormat("dd-MM-yyyy").format(new Date()));
-            message.setText(" ");
+
+
+            StringBuilder msgToBodyMail = new StringBuilder();
+            for (int i = 0 ; i < assignments.size() ; i ++)
+            {
+                Log.d("ptttt", "SendEmail: " +assignments.get(i));
+                msgToBodyMail.append(String.valueOf("שם המשימה: " + assignments.get(i).getTitle() + "\n"));
+                if(assignments.get(i).getStatus().equals("complete"))
+                    msgToBodyMail.append(String.valueOf("סטאטוס: בוצע " + "\n"));
+                if(assignments.get(i).getStatus().equals("incomplete"))
+                    msgToBodyMail.append(String.valueOf("סטאטוס: לא בוצע " + "\n"));
+                if (!TextUtils.isEmpty(assignments.get(i).getNotes()))
+                    msgToBodyMail.append(String.valueOf("הערות העובד/ת: " + assignments.get(i).getNotes() + "\n"));
+                msgToBodyMail.append("\n");
+
+            }
+            message.setText(msgToBodyMail.toString());
+            message.saveChanges();
 
             Transport.send(message);
 

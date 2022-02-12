@@ -67,6 +67,7 @@
                 android:elevation="8dp"
                 android:fontFamily="@font/varela_round"
                 android:text="@string/ADD"
+                app:iconGravity="end"
                 android:textColor="@color/black"
                 android:textSize="20sp"
                 android:textStyle="bold"

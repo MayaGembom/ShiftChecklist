@@ -1,8 +1,8 @@
 package com.MayaGembom.shiftchecklist.Activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -26,9 +26,6 @@ import com.MayaGembom.shiftchecklist.Objects.Owner;
 import com.MayaGembom.shiftchecklist.Objects.ShiftManager;
 import com.MayaGembom.shiftchecklist.R;
 import com.bumptech.glide.Glide;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,26 +43,33 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
     private TextView header_LBL_name;
     private TextView header_LBL_role;
     private FrameLayout main_FRL_container;
-    private static String currentWorkerID;
-
+    private static String currentUserId;
+    private static String ownerDepartment;
     private Employee employee;
     private ShiftManager shiftManager;
     private Owner owner;
+    private static boolean ownerFlag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Intent intent = getIntent();
-        currentWorkerID =intent.getExtras().getString("key");
+        currentUserId =intent.getExtras().getString("key");
 
         findViews();
         initListener();
         toolbarView();
 
+
+        header_IMG_profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent newIntent = new Intent(Activity_Main.this, Activity_Register.class);
+                startActivity(newIntent);
+            }
+        });
     }
-
-
 
     private void findViews() {
         main_TLB_toolbar = findViewById(R.id.main_TLB_toolbar);
@@ -100,23 +104,24 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
         return true;
     }
 
+    @SuppressLint("NonConstantResourceId")
     private void openFragment(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.menu_ITM_profile:
-                Intent newIntent = new Intent(this, Activity_Register.class);
-                startActivity(newIntent);
             case R.id.menu_ITM_employee_assign:
                 getSupportFragmentManager().beginTransaction().replace(main_FRL_container.getId(), new Fragment_EmployeeAssignments()).commit();
                 main_TLB_toolbar.setTitle("טופס משימות");
                 break;
-            case R.id.menu_ITM_manage_shiftmanager_assign:
+            case R.id.menu_ITM_shiftmanager_assign:
                 getSupportFragmentManager().beginTransaction().replace(main_FRL_container.getId(), new Fragment_ShiftManagerAssignments()).commit();
                 main_TLB_toolbar.setTitle("טופס משימות אחמ\"ש");
                 break;
             case R.id.menu_ITM_manage_employee_assign:
                 getSupportFragmentManager().beginTransaction().replace(main_FRL_container.getId(), new Fragment_EmployeeAssignments()).commit();
                 main_TLB_toolbar.setTitle("ניהול טופס משימות עובדים");
-
+                break;
+            case R.id.menu_ITM_manage_shiftmanager_assign:
+                getSupportFragmentManager().beginTransaction().replace(main_FRL_container.getId(), new Fragment_ShiftManagerAssignments()).commit();
+                main_TLB_toolbar.setTitle("ניהול טופס משימות אחמ\"שים");
                 break;
             case R.id.menu_ITM_logout:
                 signOut();
@@ -127,7 +132,6 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
     private void signOut() {
         FirebaseAuth auth = MyFirebase.getInstance().getAuth();
         if (auth != null) {
-            FirebaseUser user = auth.getCurrentUser();
             auth.signOut();
         }
         Intent i = new Intent(Activity_Main.this, Activity_Login.class);
@@ -141,9 +145,10 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
         FirebaseUser firebaseUser = MyFirebase.getInstance().getUser();
         DatabaseReference myRef = MyFirebase.getInstance().getFdb().getReference("Users").child(firebaseUser.getUid());
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                switch (currentWorkerID){
+                switch (currentUserId){
                     case Constants.Employee_ID:
                         employee = dataSnapshot.getValue(Employee.class); //load user from DB
                         header_LBL_role.setText("תפקיד: עובד");
@@ -181,16 +186,14 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
 
     private void showItems() {
         Menu menu = main_NAV_navigation.getMenu();
-        switch (currentWorkerID) {
+        switch (currentUserId) {
                     case Constants.Employee_ID:
-                        menu.findItem(R.id.menu_ITM_profile).setVisible(true);
                         menu.findItem(R.id.menu_ITM_shiftmanager_assign).setVisible(false);
                         menu.findItem(R.id.menu_ITM_employee_assign).setVisible(true);
                         menu.findItem(R.id.menu_ITM_manage_employee_assign).setVisible(false);
                         menu.findItem(R.id.menu_ITM_manage_shiftmanager_assign).setVisible(false);
                         break;
                     case Constants.ShiftManager_ID:
-                        menu.findItem(R.id.menu_ITM_profile).setVisible(true);
                         menu.findItem(R.id.menu_ITM_employee_assign).setVisible(false);
                         menu.findItem(R.id.menu_ITM_shiftmanager_assign).setVisible(true);
                         menu.findItem(R.id.menu_ITM_manage_employee_assign).setVisible(true);
@@ -199,17 +202,32 @@ public class Activity_Main extends AppCompatActivity implements NavigationView.O
                     case Constants.Owner_ID:
                         menu.findItem(R.id.menu_ITM_employee_assign).setVisible(false);
                         menu.findItem(R.id.menu_ITM_shiftmanager_assign).setVisible(false);
-                        menu.findItem(R.id.menu_ITM_profile).setVisible(true);
-                        menu.findItem(R.id.menu_ITM_manage_employee_assign).setVisible(true);
+                        menu.findItem(R.id.menu_ITM_manage_employee_assign).setVisible(false);
                         menu.findItem(R.id.menu_ITM_manage_shiftmanager_assign).setVisible(true);
                        break;
         }
     }
 
-    public static String getCurrentWorkerID() {
-        return currentWorkerID;
+    public static String getCurrentUserId() {
+        return currentUserId;
     }
 
+
+    public static boolean isOwnerFlag() {
+        return ownerFlag;
+    }
+
+    public static void setOwnerFlag(boolean ownerFlag) {
+        Activity_Main.ownerFlag = ownerFlag;
+    }
+
+    public static String getOwnerDepartment() {
+        return ownerDepartment;
+    }
+
+    public static void setOwnerDepartment(String ownerDepartment) {
+        Activity_Main.ownerDepartment = ownerDepartment;
+    }
 }
 
 

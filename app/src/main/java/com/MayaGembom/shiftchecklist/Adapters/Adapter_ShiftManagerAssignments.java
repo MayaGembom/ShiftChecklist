@@ -1,13 +1,9 @@
-package com.MayaGembom.shiftchecklist.Recycler;
+package com.MayaGembom.shiftchecklist.Adapters;
 
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
-import android.view.Gravity;
+import android.annotation.SuppressLint;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatImageView;
@@ -19,35 +15,32 @@ import com.MayaGembom.shiftchecklist.More.Constants;
 import com.MayaGembom.shiftchecklist.Objects.Assignment;
 import com.MayaGembom.shiftchecklist.Objects.MyFirebase;
 import com.MayaGembom.shiftchecklist.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.android.material.textview.MaterialTextView;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseReference;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
-public class AdapterAssignment extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+public class Adapter_ShiftManagerAssignments extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-    private ArrayList<Assignment> assignments = new ArrayList<>();
+    private ArrayList<Assignment> assignments;
     private AssignmentItemClickListener assignmentItemClickListener;
     private AssignmentItemDeleteListener assignmentItemDeleteListener;
-
     private String currentWorkerID;
 
-    public AdapterAssignment(ArrayList<Assignment> assignments) {
+    public Adapter_ShiftManagerAssignments(ArrayList<Assignment> assignments) {
         this.assignments = assignments;
     }
 
-    public AdapterAssignment setAssignmentItemClickListener(AssignmentItemClickListener assignmentItemClickListener) {
+    public Adapter_ShiftManagerAssignments setAssignmentItemClickListener(AssignmentItemClickListener assignmentItemClickListener) {
         this.assignmentItemClickListener = assignmentItemClickListener;
         return this;
     }
 
-    public AdapterAssignment setAssignmentItemDeleteListener(AssignmentItemDeleteListener assignmentItemDeleteListener) {
+    public Adapter_ShiftManagerAssignments setAssignmentItemDeleteListener(AssignmentItemDeleteListener assignmentItemDeleteListener) {
         this.assignmentItemDeleteListener = assignmentItemDeleteListener;
         return this;
     }
@@ -60,12 +53,13 @@ public class AdapterAssignment extends RecyclerView.Adapter<RecyclerView.ViewHol
         return new AssignmentViewHolder(view);
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         AssignmentViewHolder assignmentViewHolder = (AssignmentViewHolder) holder;
         Assignment assignment = getItem(position);
         assignmentViewHolder.assignment_LBL_title.setText(assignment.getTitle());
-        assignmentViewHolder.assignment_TXT_number.setText(position+1 + ".");
+        assignmentViewHolder.assignment_TXT_number.setText(String.format("%d.", position + 1));
 
         boolean isVisible = assignment.isVisibility();
         ((AssignmentViewHolder) holder).constraintLayout.setVisibility(isVisible ? View.VISIBLE : View.GONE);
@@ -108,25 +102,17 @@ public class AdapterAssignment extends RecyclerView.Adapter<RecyclerView.ViewHol
             this.assignment_TBTN_status = itemView.findViewById(R.id.assignment_TBTN_status);
             this.assignment_EDT_note = itemView.findViewById(R.id.assignment_EDT_note);
 
-            currentWorkerID = Activity_Main.getCurrentWorkerID();
-            if(currentWorkerID.equals(Constants.Employee_ID))
+            currentWorkerID = Activity_Main.getCurrentUserId();
+            if(currentWorkerID.equals(Constants.ShiftManager_ID))
                 assignment_BTN_delete.setVisibility(View.INVISIBLE);
 
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String notes = assignment_EDT_note.getEditText().getText().toString();
-                    assignmentItemClickListener.assignmentItemClicked(getItem(getAdapterPosition()), getAdapterPosition(),notes);
-                    notifyItemChanged(getAdapterPosition());
-                }
+            itemView.setOnClickListener(v -> {
+                String notes = Objects.requireNonNull(assignment_EDT_note.getEditText()).getText().toString();
+                assignmentItemClickListener.assignmentItemClicked(getItem(getAdapterPosition()), getAdapterPosition(),notes);
+                notifyItemChanged(getAdapterPosition());
             });
 
-            assignment_BTN_delete.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    assignmentItemDeleteListener.assignmentDeleteItemClicked(getAdapterPosition());
-                }
-            });
+            assignment_BTN_delete.setOnClickListener(view -> assignmentItemDeleteListener.assignmentDeleteItemClicked(getAdapterPosition()));
 
             assignment_TBTN_status.setSingleSelection(true);
             assignment_TBTN_status.addOnButtonCheckedListener((group, checkedId, isChecked) -> {
@@ -135,28 +121,22 @@ public class AdapterAssignment extends RecyclerView.Adapter<RecyclerView.ViewHol
                     FirebaseUser firebaseUser = MyFirebase.getInstance().getUser();
                     String userId = firebaseUser.getUid();
                     DatabaseReference myRef = MyFirebase.getInstance().getFdb().getReference(Constants.USERS_PATH).child(userId).child(Constants.WORKER_DEPARTMENT_PATH);
-                    myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                        @Override
-                        public void onComplete(@NonNull Task<DataSnapshot> task) {
-                            if(task.isSuccessful()){
-                                String workerDepartment = String.valueOf(task.getResult().getValue());
-                                DatabaseReference myRef = MyFirebase.getInstance().getFdb().getReference(Constants.ASSIGNMENTS_PATH).child(workerDepartment).child(assignment.getTitle());
-                                myRef.get().addOnCompleteListener(new OnCompleteListener<DataSnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<DataSnapshot> task) {
-                                        if(task.isSuccessful()) {
-                                            if (checkedId == R.id.assignment_BTN_complete) {
-                                                myRef.child("status").setValue("complete");
-                                            }
-                                            if (checkedId == R.id.assignment_BTN_incomplete) {
-                                                myRef.child("status").setValue("incomplete");
-                                            }
-
-                                        }
+                    myRef.get().addOnCompleteListener(task -> {
+                        if(task.isSuccessful()){
+                            String workerDepartment = String.valueOf(task.getResult().getValue());
+                            DatabaseReference myRef1 = MyFirebase.getInstance().getFdb().getReference(Constants.ASSIGNMENTS_PATH).child(workerDepartment).child(assignment.getTitle());
+                            myRef1.get().addOnCompleteListener(task1 -> {
+                                if(task1.isSuccessful()) {
+                                    if (checkedId == R.id.assignment_BTN_complete) {
+                                        myRef1.child("status").setValue("complete");
                                     }
-                                });
+                                    if (checkedId == R.id.assignment_BTN_incomplete) {
+                                        myRef1.child("status").setValue("incomplete");
+                                    }
 
-                            }
+                                }
+                            });
+
                         }
                     });
                 }
